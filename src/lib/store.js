@@ -12,6 +12,7 @@ const fuzzyState = {
 	size: 10,
 	current_page: 0,
 	page_sizes: [10, 100, 250, 500, 1000],
+	pages: [],
 	table: [],
 };
 

@@ -71,5 +71,10 @@
     on:input={instantSearch}
     aria-label="Search"
     autocomplete="off"
-    class="block w-full border border-x-0 border-stone-400 pl-10 text-sm text-stone-800 shadow-lg placeholder-stone-800 dark:border-stone-700 dark:bg-stone-600 dark:text-stone-100 dark:placeholder-stone-100"
+    class={`
+        ${($fuzzy.size < $fuzzy.table.length) ? 'border-r-0' : 'border-r-1 rounded-r-lg'}
+        block w-full border border-l-0 border-stone-400 pl-4 text-sm shadow-lg 
+        dark:border-stone-700 dark:bg-stone-600 text-stone-800  dark:text-stone-100 
+        placeholder-stone-800 dark:placeholder-stone-100
+    `}
 />

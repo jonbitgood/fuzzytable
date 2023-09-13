@@ -19,18 +19,18 @@
         const id = column.id;
         if (column.type == "int") {
             if (sortedCol == id) {
-                table = table.sort((a, b) => a[id] - b[id]);
+                $fuzzy.table = $fuzzy.table.sort((a, b) => a[id] - b[id]);
                 sortedCol = "";
             } else {
-                table = table.sort((a, b) => a[id] - b[id]).reverse();
+                $fuzzy.table = $fuzzy.table.sort((a, b) => a[id] - b[id]).reverse();
                 sortedCol = id;
             }
         } else {
             if (sortedCol.includes(id)) {
-                table = sortByValueString(table, id);
+                $fuzzy.table = sortByValueString($fuzzy.table, id);
                 sortedCol = "";
             } else {
-                table = sortByValueString(table, id).reverse();
+                $fuzzy.table = sortByValueString($fuzzy.table, id).reverse();
                 sortedCol = id;
             }
         }
@@ -77,7 +77,7 @@
     <div class="flex flex-row mt-8 h-12">
         <FuzzySizeSelect />
         <FuzzySearch {data} {head} {t} />
-        <FuzzyPagination {pageSizes} />
+        <FuzzyPagination {pageSizes} position="top" />
         <FuzzyClipboardCopy />
     </div>
 
