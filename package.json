@@ -39,6 +39,7 @@
 		"@sveltejs/adapter-static": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
 		"@sveltejs/package": "^2.0.0",
+		"svelte-preprocess": "^5.0.4",
 		"autoprefixer": "^10.4.15",
 		"postcss": "^8.4.29",
 		"publint": "^0.1.9",
@@ -53,7 +54,6 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"fuse.js": "^6.6.2",
-		"svelte-preprocess": "^5.0.4"
+		"fuse.js": "^6.6.2"
 	}
 }
