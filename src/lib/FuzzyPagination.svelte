@@ -1,17 +1,13 @@
 <script>
-
-  import fuzzyState from './store.js'
-
-  let start = 0
+  import fuzzy from './store.js'
   let current_page = 0
 </script>
 
-
 <span class="isolate inline-flex rounded-md shadow-sm mx-auto">
-    {#if Array.from({length: $fuzzyState.table.length / $fuzzyState.size}, (_, i) => i).includes(current_page - 1)}
+    {#if Array.from({length: $fuzzy.table.length / $fuzzy.size}, (_, i) => i).includes(current_page - 1)}
     <button type="button" class="relative inline-flex items-center rounded-l-md bg-white dark:bg-stone-900 px-2 py-1 text-stone-600 ring-1 ring-inset ring-stone-400 dark:ring-stone-950 hover:bg-stone-50 focus:z-10"  on:click={() => {
         current_page--
-        start = current_page * $fuzzyState.size
+        $fuzzy.start = current_page * $fuzzy.size
     }}>
       <span class="sr-only">Previous</span>
       <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -20,10 +16,10 @@
     </button>
     {/if}
     <button  class="relative inline-flex items-center bg-white dark:bg-stone-900 px-4 py-2 text-stone-600 ring-1 ring-inset ring-stone-400 dark:ring-stone-950 hover:bg-stone-50 focus:z-10">{current_page + 1}</button>
-    {#if Array.from({length: $fuzzyState.table.length / $fuzzyState.size}, (_, i) => i).includes(current_page + 1)}
+    {#if Array.from({length: $fuzzy.table.length / $fuzzy.size}, (_, i) => i).includes(current_page + 1)}
     <button type="button" class="relative -ml-px inline-flex items-center rounded-r-md bg-white dark:bg-stone-900 px-2 py-1 text-stone-600 ring-1 ring-inset ring-stone-400 dark:ring-stone-950 hover:bg-stone-50 focus:z-10" on:click={() => {
         current_page++
-        start = current_page * $fuzzyState.size
+        $fuzzy.start = current_page * $fuzzy.size
     }}>
       <span class="sr-only">Next</span>
       <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

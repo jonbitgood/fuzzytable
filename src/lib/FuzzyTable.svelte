@@ -1,5 +1,4 @@
 <script>
-
     import FuzzyTableRowManager from "./FuzzyTableRowManager.svelte";
     import FuzzyClipboardCopy from "./FuzzyClipboardHelper.svelte";
     import FuzzyPagination from "./FuzzyPagination.svelte";
@@ -12,6 +11,7 @@
     export let data;
     export let head;
     export let t;
+    export let pageSizes;
 
     let sortedCol = "";
 
@@ -77,7 +77,7 @@
     <div class="flex flex-row mt-8 h-12">
         <FuzzySizeSelect />
         <FuzzySearch {data} {head} {t} />
-        <FuzzyPagination />
+        <FuzzyPagination {pageSizes} />
         <FuzzyClipboardCopy />
     </div>
 
