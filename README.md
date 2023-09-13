@@ -32,7 +32,7 @@ The Data structure going into the table is defined in the head param, each eleme
   head={[
     {	id: "tt", name: "Title", 
 		link: {base: `/countries`,id: 'id'},
-		icon: {base: '/images/flags.svg#', id: 'id',}
+		icon: {base: '/images/flags.svg#', id: 'id'}
 	},
     {id: "po", name: "Population", type: "int", searchable:false, class: "text-center"},
     {id: "rn", name: "Region"},

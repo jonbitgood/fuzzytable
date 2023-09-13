@@ -73,8 +73,8 @@
     autocomplete="off"
     class={`
         ${($fuzzy.size < $fuzzy.table.length) ? 'border-r-0' : 'border-r-1 rounded-r-lg'}
-        block w-full border border-l-0 border-stone-400 pl-4 text-sm shadow-lg 
-        dark:border-stone-700 dark:bg-stone-600 text-stone-800  dark:text-stone-100 
+        block w-full border border-l-0 border-stone-400 ltr:pl-4 rtl:pr-4 text-sm shadow-lg 
+        dark:border-stone-700 dark:bg-stone-600 text-stone-800 dark:text-stone-100 
         placeholder-stone-800 dark:placeholder-stone-100
     `}
 />
