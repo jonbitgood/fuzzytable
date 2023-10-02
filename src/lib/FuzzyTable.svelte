@@ -6,6 +6,7 @@
     import FuzzySearch from "./FuzzyTableSearch.svelte"
     import fuzzy from "./store.js";
     import { sortByValueString } from "./FuzzyUtils.js";
+    import FuzzyDownloadTable from "./FuzzyDownloadTable.svelte";
 
     export let filters;
     export let data;
@@ -75,10 +76,12 @@
 <div class="w-full max-w-7xl px-4 mx-auto">
 
     <div class="flex flex-row mt-8 h-12">
+        <FuzzyClipboardCopy />
+        <FuzzyDownloadTable {data} />
         <FuzzySizeSelect />
         <FuzzySearch {data} {head} {t} />
         <FuzzyPagination {pageSizes} position="top" />
-        <FuzzyClipboardCopy />
+
     </div>
 
     <div class="flex flex-row mt-8">

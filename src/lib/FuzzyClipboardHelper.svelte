@@ -28,7 +28,7 @@
 </script>
 
 <button
-    class="bg-stone-100 dark:bg-stone-900 relative rounded-full border border-stone-400 w-14 h-12 ltr:ml-4 rtl:mr-4 hover:border-stone-600"
+    class="relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 text-stone-400 ring-1 ring-inset ring-stone-400 dark:ring-stone-950 focus:z-10"
     on:click={() => {
         copyToClipboard(convertToTSV($fuzzyState.table));
         copysuccessfulNotice = 1;
@@ -43,7 +43,7 @@
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
-        class="w-6 h-6 mx-auto dark:text-stone-100"
+        class="w-6 h-6 mx-auto dark:text-stone-300"
     >
         <path
             stroke-linecap="round"
