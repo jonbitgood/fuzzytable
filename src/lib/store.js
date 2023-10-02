@@ -9,9 +9,9 @@ const fuzzyState = {
 	filters: [],
 	sortedCol: "",
 	start: 0,
-	size: 10,
+	size: 100,
 	current_page: 0,
-	page_sizes: [10, 100, 250, 500, 1000],
+	page_sizes: [100, 150, 500, 1000, 5000],
 	pages: [],
 	table: [],
 };
