@@ -160,7 +160,7 @@
                                 {#each head as column}
                                     <td class={`${column.class} ${column.id} whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]`}>
                                         {#if column.link}
-                                            <a href={`${column.link.base ? column.link.base + "/" : ""}${row?.item?.[column.link.id] ?? row[column.link.id]}`}>
+                                            <a href={`${column.link.base ? column.link.base : ""}${row?.item?.[column.link.id] ?? row[column.link.id]}`}>
                                                 {#if column.icon}
                                                     <svg class="h-5 w-5 drop-shadow-md inline-block mr-1">
                                                         <use 
