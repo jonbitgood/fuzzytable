@@ -1,6 +1,6 @@
 <script>
     import { fade } from 'svelte/transition';
-    import fuzzyState from "./store.js"
+    import {fuzzy} from "./store.js"
 
     let copysuccessfulNotice = 0;
 
@@ -30,7 +30,7 @@
 <button
     class="relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 text-stone-400 ring-1 ring-inset ring-stone-400 dark:ring-stone-950 focus:z-10"
     on:click={() => {
-        copyToClipboard(convertToTSV($fuzzyState.table));
+        copyToClipboard(convertToTSV($fuzzy.table));
         copysuccessfulNotice = 1;
         setTimeout(() => {
             copysuccessfulNotice = 0;

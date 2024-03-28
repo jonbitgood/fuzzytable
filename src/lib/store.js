@@ -1,9 +1,10 @@
 import { writable, derived } from "svelte/store";
 import Fuse from "fuse.js";
 
-// Define the initial state for the store
-const fuzzyState = {
+// Create the store
+export const fuzzy = writable({
 	data: [],
+	filteredTable: [],
 	head: [],
 	query: "",
 	filters: [],
@@ -14,16 +15,13 @@ const fuzzyState = {
 	page_sizes: [100, 150, 500, 1000, 5000],
 	pages: [],
 	table: [],
-};
-
-// Create the store
-const store = writable(fuzzyState);
+});
 
 // Derived store for Fuse.js
 export const fuse = derived(
-	store,
-	($store) =>
-		new Fuse($store.data, {
+	fuzzy,
+	($fuzzy) =>
+		new Fuse($fuzzy.filteredTable, {
 			shouldSort: true,
 			includeMatches: true,
 			threshold: 0.3,
@@ -31,11 +29,8 @@ export const fuse = derived(
 			distance: 50,
 			maxPatternLength: 12,
 			minMatchCharLength: 1,
-			keys: $store.head
+			keys: $fuzzy.head
 				.filter((column) => column.searchable !== false)
 				.map((column) => column.id),
 		}),
 );
-
-// Export the store
-export default store;

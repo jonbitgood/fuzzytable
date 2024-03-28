@@ -1,36 +1,17 @@
 <script>
-    import Fuse from "fuse.js";
-    import fuzzy from "./store.js";
+    import {fuzzy, fuse} from "./store.js";
 
-    export let data;
-    export let head;
     export let t;
 
-    $fuzzy.table = data;
-
-    let query;
-    const engine = new Fuse(data, {
-        shouldSort: true,
-        includeMatches: true,
-        threshold: 0.3, // At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match (of both letters and location), a threshold of 1.0 would match anything.
-        location: 0, // Determines approximately where in the text is the pattern expected to be found
-        distance: 50, // Determines how close the match must be to the fuzzy location (specified by location). An exact letter match which is distance characters away from the fuzzy location would score as a complete mismatch. A distance of 0 requires the match be at the exact location specified. A distance of 1000 would require a perfect match to be within 800 characters of the location to be found using a threshold of 0.8
-        maxPatternLength: 12,
-        minMatchCharLength: 1,
-        keys: head
-            .filter((column) => column.searchable !== false)
-            .map((column) => column.id),
-    });
-
     let instantSearch = function () {
-        if (query != "") {
-            let results = engine.search(query).slice(0, 100);
+        if ($fuzzy.query != "") {
+            let results = $fuse.search($fuzzy.query).slice(0, 100);
             results.map((item) => {
                 item = highlighter(item);
             });
             $fuzzy.table = results;
         } else {
-            $fuzzy.table = data;
+            $fuzzy.table = $fuzzy.filteredTable;
         }
     };
 
@@ -67,14 +48,14 @@
 <input
     type="search"
     placeholder={t?.search ?? "Type Anything ..."}
-    bind:value={query}
+    bind:value={$fuzzy.query}
     on:input={instantSearch}
     aria-label="Search"
     autocomplete="off"
     class={`
         ${($fuzzy.size < $fuzzy.table.length) ? 'border-r-0' : 'border-r-1 rounded-r-lg'}
-        block w-full border border-l-0 border-stone-400 dark:border-stone-950 ltr:pl-4 rtl:pr-4 text-sm shadow-lg 
-        dark:border-stone-700 dark:bg-stone-800 text-stone-800 dark:text-stone-100 
+        block w-full border border-l-0 border-stone-400 dark:border-stone-950 px-4 text-sm shadow-lg 
+        dark:bg-stone-800 text-stone-800 dark:text-stone-100 
         placeholder-stone-800 dark:placeholder-stone-100
     `}
 />

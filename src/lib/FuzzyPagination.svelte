@@ -1,8 +1,8 @@
 <script>
-  import fuzzy from "./store.js";
+  import {fuzzy} from "./store.js";
   import {ArrowLeft, ArrowRight} from "./icons/index.js"
 
-  export let position
+  export let position = 'top'
 
   $fuzzy.pages = Array.from({ length: $fuzzy.table.length / $fuzzy.size }, (_, i) => i)
 </script>

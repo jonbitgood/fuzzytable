@@ -1,10 +1,7 @@
 <script>
     export let data;
 
-    let types = [
-      'JSON',
-      'TSV'
-    ]
+    let types = [ 'JSON', 'TSV' ]
     
     const downloadData = (type) => {
       const blob = new Blob([

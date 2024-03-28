@@ -4,7 +4,7 @@
     import FuzzyPagination from "./FuzzyPagination.svelte";
     import FuzzySizeSelect from "./FuzzySizeSelect.svelte";
     import FuzzySearch from "./FuzzyTableSearch.svelte"
-    import fuzzy from "./store.js";
+    import {fuzzy} from "./store.js";
     import { sortByValueString } from "./FuzzyUtils.js";
     import FuzzyDownloadTable from "./FuzzyDownloadTable.svelte";
 
@@ -12,27 +12,32 @@
     export let data;
     export let head;
     export let t;
-    export let pageSizes;
+    export let pageSizes = [100, 150, 500, 1000, 5000];
 
-    let sortedCol = "";
+    $fuzzy.table = data;
+    $fuzzy.data = data;
+    $fuzzy.head = head;
+    $fuzzy.filteredTable = data;
+
+
 
     function sort(column) {
         const id = column.id;
         if (column.type == "int") {
-            if (sortedCol == id) {
+            if ($fuzzy.sortedCol == id) {
                 $fuzzy.table = $fuzzy.table.sort((a, b) => a[id] - b[id]);
-                sortedCol = "";
+                $fuzzy.sortedCol = "";
             } else {
                 $fuzzy.table = $fuzzy.table.sort((a, b) => a[id] - b[id]).reverse();
-                sortedCol = id;
+                $fuzzy.sortedCol = id;
             }
         } else {
-            if (sortedCol.includes(id)) {
+            if ($fuzzy.sortedCol.includes(id)) {
                 $fuzzy.table = sortByValueString($fuzzy.table, id);
-                sortedCol = "";
+                $fuzzy.sortedCol = "";
             } else {
                 $fuzzy.table = sortByValueString($fuzzy.table, id).reverse();
-                sortedCol = id;
+                $fuzzy.sortedCol = id;
             }
         }
     }
@@ -41,6 +46,7 @@
 
     function applyFilters(filterKey, optionKey) {
         let tempTable = data;
+
         filters[filterKey].options[optionKey].active =
             filters[filterKey].options[optionKey].values == "" ? false : true;
 
@@ -56,20 +62,21 @@
             filter.options.forEach((option) => {
                 if (option.active) {
                     if (option.inverse) {
-                        tempTable = tempTable.filter(
-                            (row) =>
-                                !option.value.test(row[filter.filterColumn])
-                        );
+                        tempTable = tempTable.filter((row) => !option.value.test(row[filter.filterColumn]));
                     } else {
-                        tempTable = tempTable.filter((row) =>
-                            option.value.test(row[filter.filterColumn])
-                        );
+                        tempTable = tempTable.filter((row) => {
+                            return option.value.test(row[filter.filterColumn]);
+                        });
                     }
                 }
             });
         });
-        table = tempTable;
-        engine.setCollection(table);
+
+        $fuzzy.filteredTable = tempTable;
+        if($fuzzy.query == "") {
+            $fuzzy.table = $fuzzy.filteredTable;
+        }
+
     }
 </script>
 
@@ -79,9 +86,8 @@
         <FuzzyClipboardCopy />
         <FuzzyDownloadTable {data} />
         <FuzzySizeSelect />
-        <FuzzySearch {data} {head} {t} />
-        <FuzzyPagination {pageSizes} position="top" />
-
+        <FuzzySearch {head} {t} />
+        <FuzzyPagination position="top" />
     </div>
 
     <div class="flex flex-row mt-8">
@@ -140,14 +146,20 @@
                             class={`relative px-1 ltr:text-left rtl:text-right text-sm font-semibold text-stone-900 dark:text-stone-200 ${column.class}`}
                             on:click={() => sort(column)}
                         >
-                            <span
-                                class="relative z-20 bg-stone-100 dark:bg-stone-700 px-1"
-                                >{column.name}</span
-                            >
-                            <button
-                                tabindex="-1"
-                                class="absolute ltr:right-2 rtl:left-2"
-                            />
+
+                            <span class="flex flex-row items-center relative z-20 bg-stone-100 dark:bg-stone-700 px-1">
+                                {#if $fuzzy.sortedCol == column.id}
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                    </svg>
+                                {:else}
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 opacity-50">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                {/if}
+                                {column.name}
+                            </span>
+
                         </th>
                     {/each}
                 </thead>
