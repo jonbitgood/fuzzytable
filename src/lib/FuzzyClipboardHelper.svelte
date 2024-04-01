@@ -28,7 +28,7 @@
 </script>
 
 <button
-    class="relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 text-stone-400 ring-1 ring-inset ring-stone-400 dark:ring-stone-950 focus:z-10"
+    class="relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 text-stone-400 ring-1 ring-inset ring-stone-400 dark:ring-stone-950 focus:z-10 rounded-l"
     on:click={() => {
         copyToClipboard(convertToTSV($fuzzy.table));
         copysuccessfulNotice = 1;

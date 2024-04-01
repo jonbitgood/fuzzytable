@@ -81,7 +81,7 @@
     }
 </script>
 
-<div class="w-full max-w-7xl px-4 mx-auto">
+<div class="w-full max-w-7xl sm:px-4 mx-auto">
 
     <div class="flex flex-row mt-8 h-12">
         <FuzzyClipboardCopy />
@@ -93,7 +93,7 @@
 
     <div class="flex flex-row mt-8">
         {#if filters}
-            <div class="flex flex-col lg:w-1/5 mr-4">
+            <div class="hidden sm:flex flex-col lg:w-1/5 mr-4">
                 <slot name="above_filters" />
                 <div
                     class="min-w-fit flex justify-top flex-col ltr:mr-4 rtl:ml-4"
@@ -110,9 +110,9 @@
                             {#each filter.options as option, optionKey}
                                 <button
                                     class={(option.active
-                                        ? "bg-secondary-600 text-white border-secondary-800"
+                                        ? "bg-stone-400 dark:bg-stone-950 text-white border-stone-800"
                                         : "") +
-                                        " text-sm relative px-2 py-1 my-2 w-full flex items-center justify-center cursor-pointer rounded-lg border dark:bg-stone-800 border-stone-200 dark:border-stone-500 shadow-sm"}
+                                        " text-sm relative px-2 py-1 my-2 w-full flex items-center justify-center cursor-pointer rounded-lg border dark:text-stone-200 dark:bg-stone-800 border-stone-200 dark:border-stone-500 shadow-sm"}
                                     on:click={() =>
                                         applyFilters(filterKey, optionKey)}
                                 >
@@ -120,7 +120,7 @@
                                         <svg
                                             class="w-5 h-5 my-1 justify-self-start"
                                             ><use
-                                                href="{filter.iconSprite}{option.code}"
+                                                href="{filter.iconSprite}{option.code ?? ''}"
                                                 xlink:href="#{option.code}"
                                             /></svg
                                         >
@@ -177,7 +177,7 @@
                                                 {#if column.icon}
                                                     <svg class="h-5 w-5 drop-shadow-md inline-block mr-1">
                                                         <use 
-                                                            href={`${column.icon.base}${row?.item?.[column.icon.id] ?? row[column.icon.id]}`}
+                                                            href={`${column.icon.base}${(row?.item?.[column.icon.id] ?? row[column.icon.id]) ?? ''}`}
                                                             xlink:href={`#${row?.item?.[column.icon.id] ?? row[column.icon.id]}`}
                                                         />
                                                     </svg>

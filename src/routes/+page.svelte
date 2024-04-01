@@ -34,7 +34,7 @@ let filters = [
 		icon: {base: '/images/flags.svg#', id: 'id',}
 	},
     {id: "po", name: "Population", type: "int", searchable:false, class: "text-center"},
-    {id: "rn", name: "Region"},
+    {id: "rn", name: "Region",class: "hidden sm:table-cell"},
     {id: "lc", name: "Languages", type: "int", searchable:false, class: "text-center hidden lg:table-cell"},
 	  {id: "id", name: "id", hidden:true, class: ""},
     {id: "pr", name: "Refugees", type: "int", searchable:false, class: "text-center hidden lg:table-cell"},

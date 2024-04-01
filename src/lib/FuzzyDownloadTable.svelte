@@ -35,11 +35,11 @@
 
   </summary>
 
-  <div class="absolute right-0 z-50 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-stone-950 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+  <div class="absolute left-0 z-50 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-stone-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
     <p class="text-center text-xs text-stone-700 dark:text-stone-300 py-2">(Download entire table dataset)</p>
 
     {#each types as type}
-      <button class="text-stone-700 dark:text-stone-200 block px-4 py-2 text-sm" on:click={() => downloadData(type)}>{type}</button>
+      <button class="text-stone-700 dark:text-stone-200 hover:dark:bg-stone-900 hover:bg-stone-200 w-full block px-4 py-2 text-sm text-left" on:click={() => downloadData(type)}>{type}</button>
     {/each}
   </div>
 
