@@ -4,7 +4,7 @@
 
   export let position = 'top'
 
-  $fuzzy.pages = Array.from({ length: $fuzzy.table.length / $fuzzy.size }, (_, i) => i)
+  $fuzzy.pages = Array.from({ length: Math.ceil($fuzzy.table.length / $fuzzy.size) }, (_, i) => i)
 </script>
 
 {#if $fuzzy.size < $fuzzy.table.length}

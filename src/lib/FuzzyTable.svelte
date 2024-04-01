@@ -14,6 +14,7 @@
     export let t;
     export let pageSizes = [100, 150, 500, 1000, 5000];
 
+    $fuzzy.page_sizes = pageSizes;
     $fuzzy.table = data;
     $fuzzy.data = data;
     $fuzzy.head = head;
@@ -149,11 +150,11 @@
 
                             <span class="flex flex-row items-center relative z-20 bg-stone-100 dark:bg-stone-700 px-1">
                                 {#if $fuzzy.sortedCol == column.id}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="box-border w-5 h-5 px-1">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
                                     </svg>
                                 {:else}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 opacity-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="box-border w-5 h-5 px-1 opacity-50">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                     </svg>
                                 {/if}
