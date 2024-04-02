@@ -93,7 +93,7 @@
 
     <div class="flex flex-row mt-8">
         {#if filters}
-            <div class="hidden sm:flex flex-col lg:w-1/5 mr-4">
+            <div id="fuzzy_filters" class="hidden sm:flex flex-col lg:w-1/5 mr-4">
                 <slot name="above_filters" />
                 <div
                     class="min-w-fit flex justify-top flex-col ltr:mr-4 rtl:ml-4"
