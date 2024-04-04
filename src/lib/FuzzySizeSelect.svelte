@@ -5,7 +5,7 @@
 </script>
 
 <select
-  id="fuzzySize"
+  id="fuzzy_size_select"
   bind:value={$fuzzy.size}
   class="appearance-none h-full px-2 bg-white dark:bg-stone-800 dark:text-stone-300 text-center ring-1 ring-inset ring-stone-400 dark:ring-stone-950"
 >

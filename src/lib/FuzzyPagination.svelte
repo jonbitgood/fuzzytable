@@ -8,7 +8,7 @@
 </script>
 
 {#if $fuzzy.size < $fuzzy.table.length}
-  <span class="isolate inline-flex rounded-md shadow-sm mx-auto">
+  <span id="fuzzy_pagination" class="isolate inline-flex rounded-md shadow-sm mx-auto">
     {#if $fuzzy.pages.includes($fuzzy.current_page - 1)}
       <button
         type="button"

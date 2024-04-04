@@ -26,7 +26,7 @@
 }
 </script>
 
-<details class="relative">
+<details class="relative" id="fuzzy_download_details">
   <summary class="relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 dark:text-stone-300 ring-1 ring-inset ring-stone-400 dark:ring-stone-950 focus:z-10">
     
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

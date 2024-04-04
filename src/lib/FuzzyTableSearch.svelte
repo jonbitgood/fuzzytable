@@ -46,6 +46,7 @@
 </script>
 
 <input
+    id="fuzzy_search"
     type="search"
     placeholder={t?.search ?? "Type Anything ..."}
     bind:value={$fuzzy.query}
