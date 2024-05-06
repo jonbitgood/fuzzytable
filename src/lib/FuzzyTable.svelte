@@ -206,9 +206,9 @@
             <div
                 class="counter text-center text-sm text-stone-400 dark:text-stone-200"
             >
-                {$fuzzy.size} / {$fuzzy.table.length}
+                {$fuzzy.table.length} / {$fuzzy.data.length}
             </div>
-            <FuzzyPagination />
+            <FuzzyPagination position="bottom" />
         </div>
     </div>
 </div>
