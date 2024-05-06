@@ -14,7 +14,7 @@
 let filters = [
   {
     name: "Continents", filterType: 'radio', filterColumn: "id", iconSprite: '/images/continents.svg#', options: [
-      {code: '', title: 'All', value: /.+/},
+      {code: '', title: 'All', value: /.+/, active: true},
       {code: 'AF', title: 'Africa', value: /AO|BF|BI|BJ|BW|CD|CF|CG|CI|CM|CV|DJ|DZ|EG|EH|ER|ET|GA|GH|GM|GN|GQ|GW|KE|KM|LR|LS|LY|MA|MG|ML|MR|MU|MW|MZ|NA|NE|NG|RE|RW|SC|SD|SH|SL|SN|SO|SS|ST|SZ|TD|TG|TN|TZ|UG|YT|ZA|ZM|ZW/},
       {code: 'AS', title: "Asia",value: /AE|AF|AM|AZ|BD|BH|BN|BT|CC|CN|CX|GE|HK|ID|IL|IN|IO|IQ|IR|JO|JP|KG|KH|KP|KR|KW|KZ|LA|LB|LK|MM|MN|MO|MV|MY|NP|OM|PH|PK|PS|QA|SA|SG|SY|TH|TJ|TM|TR|TW|UZ|VN|YE/},
       {code: 'EU', title: "Europe", value: /AD|AL|AT|AX|BA|BE|BG|BY|CH|CY|CZ|DE|DK|EE|ES|FI|FO|FR|GB|GG|GI|GR|HR|HU|IE|IM|IS|IT|JE|LI|LT|LU|LV|MC|MD|ME|MK|MT|NL|NO|PL|PT|RO|RS|RU|SE|SI|SJ|SK|SM|UA|VA|XK/},
