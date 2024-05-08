@@ -4,39 +4,35 @@
 
     let copysuccessfulNotice = 0;
 
-    const convertToTSV = (objArray) => {
-        const array =
-            typeof objArray !== "object" ? JSON.parse(objArray) : objArray;
-        let str = `${Object.keys(array[0]).join("\t")}\r\n`;
-
-        return array.reduce((str, next) => {
-            str += `${Object.values(next).join("\t")}\r\n`;
-            return str;
-        }, str);
+    const convertToTSV = (input) => {
+        const data = typeof input === 'string' ? JSON.parse(input) : input;
+        if (!Array.isArray(data)) {
+            console.error('Input must be an array of objects');
+            return '';
+        }
+        if (data.length === 0) {
+            return '';
+        }
+        const headers = Object.keys(data[0]);
+        const headerRow = `${headers.join('\t')}\r\n`;
+        const dataRows = data.map(row => headers.map(field => row[field] || '').join('\t')).join('\r\n');
+        return `${headerRow}${dataRows}\r\n`;
     };
 
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text).then(
-            function () {
-                console.log("Async: Copying to clipboard was successful!");
-            },
-            function (err) {
-                console.error("Async: Could not copy text: ", err);
-            }
+            () => {console.log("Async: Copying to clipboard was successful!");},
+            (err) => {console.error("Async: Could not copy text: ", err);}
         );
+        copysuccessfulNotice = 1;
+        setTimeout(() => { copysuccessfulNotice = 0; }, "2000");
     };
 </script>
 
 <button
     id="fuzzy_copy_button"
     class="relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 text-stone-400 ring-1 ring-inset ring-stone-400 dark:ring-stone-950 focus:z-10 rounded-l"
-    on:click={() => {
-        copyToClipboard(convertToTSV($fuzzy.table));
-        copysuccessfulNotice = 1;
-        setTimeout(() => {
-            copysuccessfulNotice = 0;
-        }, "2000");
-    }}
+    on:click={() => copyToClipboard(convertToTSV($fuzzy.table)) }
 >
     <svg
         xmlns="http://www.w3.org/2000/svg"

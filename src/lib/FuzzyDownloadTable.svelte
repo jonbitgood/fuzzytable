@@ -1,16 +1,15 @@
 <script>
     export let data;
 
-    let types = [ 'JSON', 'TSV' ]
-    
+    const types = [ 'JSON', 'TSV' ]
     const downloadData = (type) => {
       const blob = new Blob([
-        (type == 'TSV') ? convertArray2TSV(data) : JSON.stringify(data)], 
-        (type == 'TSV') ? {type: 'text/tsv'} : {type: 'application/json' }
+        (type === 'TSV') ? convertArray2TSV(data) : JSON.stringify(data)], 
+        (type === 'TSV') ? {type: 'text/tsv'} : {type: 'application/json' }
       );
 
       const link = document.createElement('a');
-      link.download = (type == 'TSV') ? 'data.tsv' : 'data.json';
+      link.download = (type === 'TSV') ? 'data.tsv' : 'data.json';
       link.href = window.URL.createObjectURL(blob);
       document.body.appendChild(link);
       link.click();
