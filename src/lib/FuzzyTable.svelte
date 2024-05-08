@@ -138,16 +138,13 @@
 
         <div class="flex flex-col w-full relative z-10">
             <table class="w-full">
-                <thead
-                    class="bg-stone-100 dark:bg-stone-700 border border-stone-300 border-b-stone-200 dark:border-stone-700"
-                >
-                    {#each head as column}
+                <thead class="bg-stone-100 dark:bg-stone-700">
+                    {#each head as column, i}
                         <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <th
-                            class={`relative px-1 ltr:text-left rtl:text-right text-sm font-semibold text-stone-900 dark:text-stone-200 ${column.class}`}
+                            class={`${i == 0 ? 'rounded-tl-xl': ''} ${(i + 1) == head.length ? 'rounded-tr-xl': ''} relative px-1 py-4 ltr:text-left rtl:text-right text-sm font-semibold text-stone-900 dark:text-stone-200 ${column.class}`}
                             on:click={() => sort(column)}
                         >
-
                             <span class="flex flex-row items-center relative z-20 bg-stone-100 dark:bg-stone-700 px-1">
                                 {#if $fuzzy.sortedCol == column.id}
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="box-border w-5 h-5 px-1">
@@ -203,12 +200,10 @@
                 </tbody>
             </table>
 
-            <div
-                class="counter text-center text-sm text-stone-400 dark:text-stone-200"
-            >
-                {$fuzzy.table.length} / {$fuzzy.data.length}
-            </div>
             <FuzzyPagination position="bottom" />
+            <div class="counter text-center text-sm text-stone-400 dark:text-stone-200 py-4">
+                {(($fuzzy.current_page + 1) * $fuzzy.size) - $fuzzy.size + 1} - {($fuzzy.current_page + 1) * $fuzzy.size} / {$fuzzy.data.length}
+            </div>
         </div>
     </div>
 </div>
