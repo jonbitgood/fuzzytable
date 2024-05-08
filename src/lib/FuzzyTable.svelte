@@ -100,7 +100,7 @@
                 >
                     {#each filters as filter, filterKey}
                         <div
-                            class="block w-full bg-gray-200 dark:bg-stone-700 text-sm font-semibold p-3 text-stone-900 dark:text-stone-200 border-b border-stone-200 dark:border-stone-500 rounded-t-lg"
+                            class={`block w-full bg-gray-200 dark:bg-stone-700 text-sm font-semibold p-3 text-stone-900 dark:text-stone-200 border-b border-stone-200 dark:border-stone-500 rounded-t-lg ${filter.class}`}
                         >
                             {filter.name}
                         </div>
@@ -110,7 +110,7 @@
                             {#each filter.options as option, optionKey}
                                 <button
                                     class={(option.active
-                                        ? "bg-stone-400 dark:bg-stone-950 text-white border-stone-800"
+                                        ? "fuzzy-filter-active bg-stone-400 dark:bg-stone-950 text-white border-stone-800"
                                         : "") +
                                         " text-sm relative px-2 py-1 my-2 w-full flex items-center justify-center cursor-pointer rounded-lg border dark:text-stone-200 dark:bg-stone-800 border-stone-200 dark:border-stone-500 shadow-sm"}
                                     on:click={() =>
