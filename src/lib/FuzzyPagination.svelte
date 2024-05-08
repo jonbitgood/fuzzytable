@@ -33,7 +33,7 @@
 </script>
 
 {#if position == 'bottom' && displayPages()}
-  <nav aria-label="Pagination" id="fuzzy_pagination_bottom" class="isolate inline-flex rounded-md shadow-sm mx-auto">
+  <nav aria-label="Pagination" id="fuzzy_pagination_bottom" class="inline-flex rounded-md shadow-sm mx-auto mt-4">
 
       {#each displayPages() as page}
         {#if page === '...'}
@@ -52,7 +52,6 @@
 
         {/if}
       {/each}
-    
   </nav>
 {/if}
 
@@ -60,7 +59,8 @@
 {#if position == 'top'}
 
 {#if $fuzzy.size < $fuzzy.table.length}
-  <span id="fuzzy_pagination_top" class="isolate inline-flex rounded-md shadow-sm mx-auto">
+
+  <div id="fuzzy_pagination_top" class="isolate inline-flex rounded-md shadow-sm mx-auto">
     {#if $fuzzy.pages.includes($fuzzy.current_page - 1)}
       <button
         type="button"
@@ -76,7 +76,7 @@
       </button>
     {/if}
     <button
-      class={`relative inline-flex items-center bg-white dark:bg-stone-800 dark:text-stone-200 px-4 py-2 text-stone-600 border ${$fuzzy.pages.includes($fuzzy.current_page - 1) ? 'border-x-0' : ''} border-stone-400 dark:border-stone-950 hover:bg-stone-50 hover:dark:bg-stone-950 focus:z-10`}
+      class={`relative inline-flex items-center bg-white dark:bg-stone-800 dark:text-stone-200 px-4 py-2 text-stone-600 border border-l-0 border-stone-400 dark:border-stone-950 hover:bg-stone-50 hover:dark:bg-stone-950 focus:z-10`}
       >{$fuzzy.current_page + 1}</button
     >
     {#if $fuzzy.pages.includes($fuzzy.current_page + 1) }
@@ -93,7 +93,8 @@
         <span class="hidden rtl:block"><ArrowLeft /></span>
       </button>
     {/if}
-  </span>
+  </div>
+
 {/if}
 
 {/if}
