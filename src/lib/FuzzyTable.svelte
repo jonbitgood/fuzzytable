@@ -7,6 +7,7 @@
     import {fuzzy} from "./store.js";
     import { sortByValueString } from "./FuzzyUtils.js";
     import FuzzyDownloadTable from "./FuzzyDownloadTable.svelte";
+  import FuzzyTableInfo from "./FuzzyTableInfo.svelte";
 
     export let filters;
     export let data;
@@ -15,6 +16,7 @@
     export let pageSizes = [100, 150, 500, 1000, 5000];
 
     $fuzzy.page_sizes = pageSizes;
+    $fuzzy.size = pageSizes[0]
     $fuzzy.table = data;
     $fuzzy.data = data;
     $fuzzy.head = head;
@@ -24,8 +26,8 @@
 
     function sort(column) {
         const id = column.id;
-        if (column.type == "int") {
-            if ($fuzzy.sortedCol == id) {
+        if (column.type === "int") {
+            if ($fuzzy.sortedCol === id) {
                 $fuzzy.table = $fuzzy.table.sort((a, b) => a[id] - b[id]);
                 $fuzzy.sortedCol = "";
             } else {
@@ -48,36 +50,29 @@
     function applyFilters(filterKey, optionKey) {
         let tempTable = data;
 
-        filters[filterKey].options[optionKey].active =
-            filters[filterKey].options[optionKey].values == "" ? false : true;
+        filters[filterKey].options[optionKey].active = filters[filterKey].options[optionKey].values !== "";
 
-        if (filters[filterKey].filterType == "radio") {
+        if (filters[filterKey].filterType === "radio") {
             filters[filterKey].options.forEach((option, i) => {
-                if (i != optionKey) {
+                if (i !== optionKey) {
                     filters[filterKey].options[i].active = false;
                 }
             });
         }
 
-        filters.forEach((filter) => {
-            filter.options.forEach((option) => {
-                if (option.active) {
-                    if (option.inverse) {
-                        tempTable = tempTable.filter((row) => !option.value.test(row[filter.filterColumn]));
-                    } else {
-                        tempTable = tempTable.filter((row) => {
-                            return option.value.test(row[filter.filterColumn]);
-                        });
-                    }
-                }
-            });
-        });
-
-        $fuzzy.filteredTable = tempTable;
-        if($fuzzy.query == "") {
-            $fuzzy.table = $fuzzy.filteredTable;
+        for (const filter of filters) {
+            for (const option of filter.options.filter(option => option.active)) {
+                tempTable = tempTable.filter((row) => {
+                    const match = option.value.test(row[filter.filterColumn]);
+                    return (option.inverse) ? !match : match}
+                );
+            }
         }
 
+        $fuzzy.filteredTable = tempTable;
+        if($fuzzy.query === "") {
+            $fuzzy.table = $fuzzy.filteredTable;
+        }
     }
 </script>
 
@@ -201,9 +196,7 @@
             </table>
 
             <FuzzyPagination position="bottom" />
-            <div class="counter text-center text-sm text-stone-400 dark:text-stone-200 py-4">
-                {(($fuzzy.current_page + 1) * $fuzzy.size) - $fuzzy.size + 1} - {($fuzzy.current_page + 1) * $fuzzy.size} / {$fuzzy.data.length}
-            </div>
+            <FuzzyTableInfo />
         </div>
     </div>
 </div>

@@ -3,46 +3,43 @@
 
     export let t;
 
-    let instantSearch = function () {
-        if ($fuzzy.query != "") {
-            let results = $fuse.search($fuzzy.query).slice(0, 100);
-            results.map((item) => {
-                item = highlighter(item);
-            });
+    const instantSearch = () => {
+        if ($fuzzy.query !== "") {
+            const results = $fuse.search($fuzzy.query).slice(0, 100);
+            results.map((item) => highlighter(item));
             $fuzzy.table = results;
         } else {
             $fuzzy.table = $fuzzy.filteredTable;
         }
     };
 
-    let highlighter = function (resultItem) {
-        resultItem.matches.forEach((matchItem) => {
-            let text = resultItem.item[matchItem.key];
-            let result = [];
-            let matches = [].concat(matchItem.indices);
+    const highlighter = (resultItem) => {
+        for (const matchItem of resultItem.matches) {
+            const text = resultItem.item[matchItem.key];
+            const result = [];
+            const matches = [].concat(matchItem.indices);
             let pair = matches.shift();
 
             for (let i = 0; i < text.length; i++) {
-                let char = text.charAt(i);
-                if (pair && i == pair[0]) {
+                const char = text.charAt(i);
+                if (pair && i === pair[0]) {
                     result.push("<b>");
                 }
                 result.push(char);
-                if (pair && i == pair[1]) {
+                if (pair && i === pair[1]) {
                     result.push("</b>");
                     pair = matches.shift();
                 }
             }
+
             resultItem.highlight = result.join("");
             resultItem.highlight_key = matchItem.key;
-
             if (resultItem.children && resultItem.children.length > 0) {
-                resultItem.children.forEach((child) => {
-                    highlighter(child);
-                });
+                // biome-ignore lint/complexity/noForEach: no need to nest here
+                resultItem.children.forEach((child) => {highlighter(child)});
             }
-        });
-    };
+        }
+    }
 </script>
 
 <input

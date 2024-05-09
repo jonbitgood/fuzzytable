@@ -26,7 +26,7 @@
 </script>
 
 {#if countries}
-<FuzzyTable data={countries} {t} {filters}
+<FuzzyTable data={countries} {t} {filters} pageSizes={[10,25,75,10000]}
   head={[
     {	id: "tt", name: "Title", 
 		link: {base: `https://find.bible/en/countries/`,id: 'id'},

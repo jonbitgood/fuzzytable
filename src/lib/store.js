@@ -13,9 +13,17 @@ export const fuzzy = writable({
 	size: 100,
 	current_page: 0,
 	page_sizes: [100, 150, 500, 1000, 5000],
-	pages: [],
 	table: [],
 });
+
+
+export const pages = derived(
+    [fuzzy], 
+    ([$fuzzy]) => {
+        const numPages = Math.ceil($fuzzy.table.length / $fuzzy.size);
+        return Array.from({ length: numPages }, (_, index) => index);
+    }
+);
 
 // Derived store for Fuse.js
 export const fuse = derived(
