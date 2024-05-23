@@ -6,10 +6,7 @@
         "recommended": true,
         "style": {
             "useConst": "off"
-        },
-        "suspicious": {
-            "noConfusingLabels": "off"
         }
       }
     }
-  }
+}
