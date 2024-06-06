@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuzzy Table Test Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&family=Noto+Sans+SC:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        html {
+            background-color: #36312C;
+        }
+
+        * {
+            font-family: "Noto Sans Arabic", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+            font-variation-settings: "wdth" 62.5;
+        }
+
+        a {
+            color:#F8BB39;
+        }
+
+        td[data-type="int"] {
+            color:#00A8C6!important;
+        }
+
+        td[data-type="int"] span {
+            color: #95CC5E;
+            font-size:x-small;
+            margin-right:5px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="text-center mt-4">
+        <a href="#">Base</a>
+        <a href="/languages.html">Languages</a>
+    </nav>
+    <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
+    <script type="module">
+        import FuzzyTable from './FuzzyTable.js'
+
+        const head = [
+            { id: "name", name: "دولة", link: { base: `https://en.wikipedia.org/wiki/ISO_3166-2:`, id: 'id' }, icon: { base: '/demo/flags.svg#', id: 'id', class: "h-5 w-5 drop-shadow-md inline-block ml-3" } },
+            { id: "population", name: "سكان", type: "int", searchable: false, class: "text-right" },
+            { id: "region_name", name: "منطقة", class: "hidden sm:table-cell" },
+            { id: "official_language", name: "لغة", searchable: false, class: "text-center hidden lg:table-cell" },
+            { id: "id", name: "id", class: "hidden" },
+            { id: "landmass_km", name: "مساحة اليابسة", type: "int", searchable: false, suffix: '<span>كم<sup class="">٢</sup> </span>', class: "text-right hidden lg:table-cell" },
+        ];
+
+        const customFilters = [{
+            name: "المناطق", filterType: 'radio', filterColumn: "id", iconSprite: '/demo/continents.svg#', options: [
+                { code: '', title: 'الجميع', value: /.+/, active: true },
+                { code: 'AF', title: 'أفريقيا', value: /AO|BF|BI|BJ|BW|CD|CF|CG|CI|CM|CV|DJ|DZ|EG|EH|ER|ET|GA|GH|GM|GN|GQ|GW|KE|KM|LR|LS|LY|MA|MG|ML|MR|MU|MW|MZ|NA|NE|NG|RE|RW|SC|SD|SH|SL|SN|SO|SS|ST|SZ|TD|TG|TN|TZ|UG|YT|ZA|ZM|ZW/ },
+                { code: 'AS', title: "آسيا", value: /AE|AF|AM|AZ|BD|BH|BN|BT|CC|CN|CX|GE|HK|ID|IL|IN|IO|IQ|IR|JO|JP|KG|KH|KP|KR|KW|KZ|LA|LB|LK|MM|MN|MO|MV|MY|NP|OM|PH|PK|PS|QA|SA|SG|SY|TH|TJ|TM|TR|TW|UZ|VN|YE/ },
+                { code: 'EU', title: "أوروبا", value: /AD|AL|AT|AX|BA|BE|BG|BY|CH|CY|CZ|DE|DK|EE|ES|FI|FO|FR|GB|GG|GI|GR|HR|HU|IE|IM|IS|IT|JE|LI|LT|LU|LV|MC|MD|ME|MK|MT|NL|NO|PL|PT|RO|RS|RU|SE|SI|SJ|SK|SM|UA|VA|XK/ },
+                { code: 'NA', title: "أمريكا الشمالية", value: /AG|AI|AW|BB|BL|BM|BQ|BS|BZ|CA|CR|CU|CW|DM|DO|GD|GL|GP|GT|HN|HT|JM|KN|KY|LC|MF|MQ|MS|MX|NI|PA|PM|PR|SV|SX|TC|TT|US|VC|VG|VI/ },
+                { code: 'SA', title: "أمريكا الجنوبية", value: /AR|BO|BR|CL|CO|EC|FK|GF|GY|PE|PY|SR|UY|VE/ },
+                { code: 'OC', title: "أوقيانوسيا", value: /AS|AU|CK|FJ|FM|GU|KI|MH|MP|NC|NF|NR|NU|NZ|PF|PG|PN|PW|SB|TK|TL|TO|TV|UM|VU|WF|WS/ }
+            ]
+        },
+        {
+            name: "إقليم", filterType: 'radio', filterColumn: "id", options: [
+                { code: '', title: 'الجميع', value: /.+/, active: true },
+                { code: 'NT', title: 'أمة', value: /AD|AE|AF|AG|AL|AM|AO|AR|AT|AU|AZ|BA|BB|BD|BE|BF|BG|BH|BI|BJ|BN|BO|BR|BS|BT|BW|BY|BZ|CA|CD|CF|CG|CH|CI|CL|CM|CN|CO|CR|CU|CV|CY|CZ|DE|DJ|DK|DM|DO|DZ|EC|EE|EG|EH|ER|ES|ET|FI|FJ|FM|FR|GA|GB|GD|GE|GH|GM|GN|GQ|GR|GT|GW|GY|HN|HR|HT|HU|ID|IE|IL|IN|IQ|IR|IS|IT|JM|JO|JP|KE|KG|KH|KI|KM|KN|KP|KR|KW|KZ|LA|LB|LC|LI|LK|LR|LS|LT|LU|LV|LY|MA|MC|MD|ME|MG|MH|MK|ML|MM|MN|MR|MT|MU|MV|MW|MX|MY|MZ|NA|NE|NG|NI|NL|NO|NP|NR|NZ|OM|PA|PE|PG|PH|PK|PL|PS|PT|PW|PY|QA|RO|RS|RU|RW|SA|SB|SC|SD|SE|SG|SI|SK|SL|SM|SN|SO|SR|SS|ST|SV|SY|SZ|TD|TG|TH|TJ|TL|TM|TN|TO|TR|TT|TV|TW|TZ|UA|UG|US|UY|UZ|VA|VC|VE|VN|VU|WS|YE|ZA|ZM|ZW/ },
+                { code: 'TR', title: 'إِقلِيم', value: /AI|AS|AW|AX|BL|BM|BQ|BV|CC|CK|CW|CX|FK|FO|GF|GG|GI|GL|GP|GS|GU|HK|HM|IM|IO|JE|KD|KY|MF|MO|MP|MQ|MS|NC|NF|NU|PF|PM|PN|PR|RE|SH|SJ|SX|TC|TF|TK|UM|VG|VI|WF|XK|YT|ZZ/ }
+            ]
+        }]
+
+        const classesOverride = {
+            pagination: '',
+    sortArrow: '',
+    arrowUp: 'absolute right-2 top-1.5 text-sm',
+    arrowDown: 'absolute right-2 bottom-1.5 text-sm',
+    paginationButton: 'w-10 h-10 inline-flex justify-center items-center border dark:border-stone-900',
+    paginationButtonCurrent: 'text-lg font-bold text-[#F8BB39]',
+    paginationNav: 'relative z-0 flex mt-4 justify-center rounded-md -space-x-px dark:text-[#f8f8f0]',
+    downloadButton: 'relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 dark:text-[#f8f8f0] ring-1 ring-inset ring-stone-400 dark:ring-stone-800 focus:z-10',
+    downloadDropdown: 'absolute left-0 z-50 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-stone-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
+    downloadDropdownButton: 'text-stone-700 dark:text-[#f8f8f0] hover:dark:bg-stone-900 hover:bg-stone-200 w-full block px-4 py-2 text-sm text-left',
+    downloadDropdownInfo: 'text-center text-xs text-stone-700 dark:text-[#f8f8f0] py-2',
+    fieldsetWrap: 'block mt-8 w-full bg-gray-200 dark:bg-stone-700 text-sm font-semibold p-3 text-stone-900 dark:text-[#f8f8f0] border-b border-stone-200 dark:border-stone-500 rounded-t-lg',
+    fieldsetFilterWrap: 'mb-4 dark:bg-stone-900 border border-stone-200 dark:border-stone-950 p-2',
+    fieldset: 'mb-4 dark:bg-stone-900 border border-stone-200 dark:border-stone-950 p-2',
+    filterContainer: 'hidden sm:flex flex-col lg:w-1/5 ltr:mr-4 rtl:ml-4',
+    filterButton: 'text-sm relative px-2 py-1 my-2 w-full flex items-center justify-center cursor-pointer rounded-lg border dark:text-[#f8f8f0] dark:bg-stone-800 border-stone-200 dark:border-stone-500 shadow-sm',
+    filterButtonActive: 'bg-stone-400 dark:bg-stone-950 text-white border-stone-800',
+    tableContainer: 'flex flex-col w-full relative z-10 max-w-7xl mx-auto',
+    tableColumn: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
+    searchInput: 'block w-full px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-950 dark:bg-stone-800 text-stone-800 dark:text-[#f8f8f0] placeholder-stone-800 dark:placeholder-stone-100',
+    searchBox: 'block w-full px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-950 dark:bg-stone-800 text-stone-800 dark:text-[#f8f8f0] placeholder-stone-800 dark:placeholder-stone-100',
+    sizeSelect: 'appearance-none w-full h-full px-6 bg-white dark:bg-stone-700 dark:text-[#f8f8f0] text-center ring-1 ring-inset ring-stone-400 dark:ring-stone-800 rtl:rounded-tl-lg ltr:rounded-tr-lg',
+    tableHeader: 'flex flex-row mt-8 h-12',
+    tableCellLink: 'text-[#F8BB39]',
+    table: 'w-full',
+    thead: 'bg-stone-100 dark:bg-stone-700',
+    tbody: 'divide-y divide-stone-200 dark:divide-stone-800 bg-white dark:bg-stone-800 border border-stone-500 dark:border-none',
+    th: 'relative px-1 py-3 rtl:pr-7 ltr:text-left rtl:text-right text-sm font-semibold text-stone-900 dark:text-[#f8f8f0] cursor-pointer',
+    tr: 'dark:even:bg-stone-900',
+    td: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
+        }
+
+// "editor.background": "#36312C"
+// "editorCursor.foreground": "#f8f8f0"
+// "editor.foreground": "#EBD1B7"
+// "editorWhitespace.foreground": "#3b3a32"
+// "editor.lineHighlightBackground": "#45403B"
+// "editor.selectionBackground": "#DB784D4D"
+// "activityBar.background": "#2F2B26"
+// "statusBar.noFolderBackground": "#2F2B26"
+// "activityBarBadge.background": "#D76538"
+// "sideBar.background": "#2F2B26"
+// "sideBarSectionHeader.background": "#26221E"
+// "activityBar.foreground": "#7a7a7a"
+// "statusBar.background": "#36312C"
+// "statusBar.foreground": "#7a7a7a"
+// "statusBar.debuggingForeground": "#fff"
+// "editorWarning.foreground": "#F8BB39"
+// "editorInfo.foreground": "#00A8C6"
+// "debugIcon.breakpointForeground": "#D76538"
+// "editorError.foreground": "#D76538"
+// "sash.hoverBorder": "#db784d85"
+// "editorBracketHighlight.foreground1": "#D76538"
+// "editorBracketHighlight.foreground2": "#F8BB39"
+// "editorBracketHighlight.foreground3": "#00A8C6"
+// "editorBracketHighlight.foreground4": "#95CC5E"
+// "editorBracketHighlight.foreground5": "#e61f44"
+// "editorBracketHighlight.foreground6": "#D76538"
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('demo/countries.json').then(reply => reply.json())
+                .then(data => {
+                    new FuzzyTable('FuzzyTableWapper', data, head, {
+                        classes: classesOverride,
+                        t: {search_placeholder: 'يبحث'},
+                        locale: 'ar-EG',
+                        filters: customFilters
+                    });
+                })
+        })
+
+    </script>
+</body>
+</html>
