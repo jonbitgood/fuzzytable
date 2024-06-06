@@ -44,8 +44,9 @@
         <a href="/languages.html">Languages</a>
     </nav>
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
-    <script type="module">
-        import FuzzyTable from './FuzzyTable.js'
+    <script src="./dist/FuzzyTable.js"></script>
+    <script>
+
 
         const head = [
             { id: "name", name: "دولة", link: { base: `https://en.wikipedia.org/wiki/ISO_3166-2:`, id: 'id' }, icon: { base: '/demo/flags.svg#', id: 'id', class: "h-5 w-5 drop-shadow-md inline-block ml-3" } },
@@ -108,32 +109,32 @@
     td: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
         }
 
-// "editor.background": "#36312C"
-// "editorCursor.foreground": "#f8f8f0"
-// "editor.foreground": "#EBD1B7"
-// "editorWhitespace.foreground": "#3b3a32"
-// "editor.lineHighlightBackground": "#45403B"
-// "editor.selectionBackground": "#DB784D4D"
-// "activityBar.background": "#2F2B26"
-// "statusBar.noFolderBackground": "#2F2B26"
-// "activityBarBadge.background": "#D76538"
-// "sideBar.background": "#2F2B26"
-// "sideBarSectionHeader.background": "#26221E"
-// "activityBar.foreground": "#7a7a7a"
-// "statusBar.background": "#36312C"
-// "statusBar.foreground": "#7a7a7a"
-// "statusBar.debuggingForeground": "#fff"
-// "editorWarning.foreground": "#F8BB39"
-// "editorInfo.foreground": "#00A8C6"
-// "debugIcon.breakpointForeground": "#D76538"
-// "editorError.foreground": "#D76538"
-// "sash.hoverBorder": "#db784d85"
-// "editorBracketHighlight.foreground1": "#D76538"
-// "editorBracketHighlight.foreground2": "#F8BB39"
-// "editorBracketHighlight.foreground3": "#00A8C6"
-// "editorBracketHighlight.foreground4": "#95CC5E"
-// "editorBracketHighlight.foreground5": "#e61f44"
-// "editorBracketHighlight.foreground6": "#D76538"
+    // "editor.background": "#36312C"
+    // "editorCursor.foreground": "#f8f8f0"
+    // "editor.foreground": "#EBD1B7"
+    // "editorWhitespace.foreground": "#3b3a32"
+    // "editor.lineHighlightBackground": "#45403B"
+    // "editor.selectionBackground": "#DB784D4D"
+    // "activityBar.background": "#2F2B26"
+    // "statusBar.noFolderBackground": "#2F2B26"
+    // "activityBarBadge.background": "#D76538"
+    // "sideBar.background": "#2F2B26"
+    // "sideBarSectionHeader.background": "#26221E"
+    // "activityBar.foreground": "#7a7a7a"
+    // "statusBar.background": "#36312C"
+    // "statusBar.foreground": "#7a7a7a"
+    // "statusBar.debuggingForeground": "#fff"
+    // "editorWarning.foreground": "#F8BB39"
+    // "editorInfo.foreground": "#00A8C6"
+    // "debugIcon.breakpointForeground": "#D76538"
+    // "editorError.foreground": "#D76538"
+    // "sash.hoverBorder": "#db784d85"
+    // "editorBracketHighlight.foreground1": "#D76538"
+    // "editorBracketHighlight.foreground2": "#F8BB39"
+    // "editorBracketHighlight.foreground3": "#00A8C6"
+    // "editorBracketHighlight.foreground4": "#95CC5E"
+    // "editorBracketHighlight.foreground5": "#e61f44"
+    // "editorBracketHighlight.foreground6": "#D76538"
 
         document.addEventListener('DOMContentLoaded', () => {
             fetch('demo/countries.json').then(reply => reply.json())

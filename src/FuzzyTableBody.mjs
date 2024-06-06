@@ -7,59 +7,69 @@
  * @param {HTMLElement} tbody - The table body element where rows will be appended.
  */
 export const createTbody = (context, tbody) => {
-
-    const tableSlice = context.table.slice(((context.currentPage +1) * context.size) - context.size, (context.currentPage + 1) * context.size)
+    const calculateRange = (page, size) => [(page + 1) * size - size, (page + 1) * size];
+    const [start, end] = calculateRange(context.currentPage, context.size);
+    const tableSlice = context.table.slice(start, end);
 
     tbody.innerHTML = '';
-    if (tableSlice.length > 0) {
-        for (const row of tableSlice) {
-            const tr = document.createElement('tr');
-            tr.className = context.classes.tr;
-            for (const column of context.head) {
-                const td = document.createElement('td');
-                td.className = `${column.class} ${column.id} ${context.classes.tableColumn}`;
+    for (const row of tableSlice) {
+        const tr = document.createElement('tr');
+        tr.className = context.classes.tr;
 
-                let content = document.createDocumentFragment();
-                if (column.icon) {
-                    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                    svg.setAttribute('class', column.icon.class);
+        for (const column of context.head) {
+            const td = document.createElement('td');
+            td.className = `${column.class} ${column.id} ${context.classes.tableColumn}`;
+            td.setAttribute('data-type', column.type);
 
-                    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-                    use.setAttribute('href', `${column.icon.base}${row[column.icon.id] ?? ''}`);
-                    use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `#${row[column.icon.id]}`);
-
-                    svg.appendChild(use);
-                    content.appendChild(svg);
-                }
-
-                const cellValue = row[column.id] ?? '';
-                
-                let textNode
-                if(column.type === 'int') {
-                    const numberFormatter = new Intl.NumberFormat(context.locale);
-                    textNode = document.createTextNode(numberFormatter.format(cellValue));
-                } else {
-                    textNode = document.createTextNode(cellValue);
-                }
-
-                content.appendChild(textNode);
-
-                if (column.link) {
-                    const a = document.createElement('a');
-                    a.href = `${column.link.base ? column.link.base : ''}${row[column.link.id]}`;
-                    a.appendChild(content);
-                    td.appendChild(a);
-                } else {
-                    td.appendChild(content);
-                }
-
-                if (column.suffix && cellValue !== '') {
-                    td.appendChild(context.safeHtml(column.suffix));
-                }
-
-                tr.appendChild(td);
+            const cellValue = row[column.id] ?? '';
+            const formattedValue = formatCellContent(cellValue, column.type, context.locale);
+            const content = new DocumentFragment();
+            if (column.icon) {
+                content.appendChild(createSVG(column.icon, row[column.icon.id] ?? ''));
             }
-            tbody.appendChild(tr);
+
+            content.appendChild(document.createTextNode(formattedValue));
+
+            if(column.subtitle) {
+                const subtitle  = document.createElement('em')
+                subtitle.className = context.classes.tableCellSubtitle;
+                subtitle.innerText = row[column.subtitle] ?? ''
+                content.appendChild(subtitle);
+            }
+
+            if (column.link) {
+                const a = document.createElement('a');
+                a.className = context.classes.tableCellLink;
+                a.href = `${column.link.base ? column.link.base : ''}${row[column.link.id]}`;
+                a.appendChild(content);
+                td.appendChild(a);
+            } else {
+                td.appendChild(content);
+            }
+
+            if (column.suffix && cellValue !== '') {
+                td.appendChild(context.safeHtml(column.suffix));
+            }
+
+            tr.appendChild(td);
         }
+        tbody.appendChild(tr);
     }
+}
+
+const createSVG = (icon, value) => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', `${icon.base}${value}`);
+    use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `#${value}`);
+    svg.setAttribute('class',icon.class);
+    svg.appendChild(use);
+    return svg;
+};
+
+const formatCellContent = (cellValue, type, locale) => {
+    if (type === 'int') {
+        return new Intl.NumberFormat(locale).format(cellValue);
+    }
+    return cellValue;
 };

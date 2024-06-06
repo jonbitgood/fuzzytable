@@ -10,7 +10,7 @@ export default function createSearchBox(context) {
     const searchBox = document.createElement('input');
     searchBox.type = 'search';
     searchBox.id = 'fuzzy_search';
-    searchBox.placeholder = context.t?.search ?? 'Search';
+    searchBox.placeholder = context.t?.search_placeholder ?? 'Search';
     searchBox.className = context.classes.searchInput;
     searchBox.oninput = () => {
 

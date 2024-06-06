@@ -11,19 +11,33 @@ import createSizeSelector from './FuzzyTableSizeSelect.mjs'
 export default class FuzzyTable {
     constructor(containerId, data, head, options) {
         this.container = document.getElementById(containerId);
-        this.data = [...data]; // Holder for inital data
-        this.table = [...data]; // User's current view
+        if(data) {
+            this.data = [...data]; // Holder for inital data
+            this.table = [...data]; // User's current view
+        } else {
+            this.data = [...JSON.parse(this.container.dataset.rows)];
+            this.table = [...JSON.parse(this.container.dataset.rows)];
+        }
+
         this.searchBox;
         this.query =  '';
         this.sortedCol = '';
         this.filters = options.filters ?? [];
         this.head = head;
+
+        if(head) {
+            this.head = head; // Holder for inital data
+        } else {
+            this.head = [...JSON.parse(this.container.dataset.head)];
+        }
+
         this.filteredTable = [];
         this.size = 10;
         this.currentPage = 1;
         this.pageSizes = [10, 150, 500, 1000, 5000];
         this.classes = mergeClasses(options.classes);
         this.locale = options.locale ?? 'en'
+        this.t = options.t ?? {search_placeholder: 'Search'}
         this.vernacularNumerals = options.vernacularNumerals ?? true;
 
         this.fuse = new Fuse(this.table, {
@@ -76,8 +90,8 @@ export default class FuzzyTable {
             // Create span elements for both sorting arrows
             const arrowUp = document.createElement('span');
             const arrowDown = document.createElement('span');
-            arrowUp.className = 'absolute right-2 top-2.5 text-sm';
-            arrowDown.className = 'absolute right-2 bottom-2.5 text-sm';
+            arrowUp.className = this.classes.arrowUp;
+            arrowDown.className = this.classes.arrowDown;
             arrowUp.textContent = '▲'; // Ascending arrow
             arrowDown.textContent = '▼'; // Descending arrow
             arrowUp.style.opacity = 0.35; // Low opacity by default

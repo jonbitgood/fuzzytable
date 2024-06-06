@@ -36,19 +36,5 @@ export default function createSizeSelector(context) {
         context.updateTable();
     });
     
-    // Add the dropdown icon
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('class', 'absolute w-4 h-4 right-1 top-1/2 -translate-y-1/2 pointer-events-none dark:text-stone-400');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('stroke', 'currentColor');
-    
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('stroke-linejoin', 'round');
-    path.setAttribute('d', 'm19 9-7 7-7-7');
-    svg.appendChild(path);
-    sizeSelectContainer.appendChild(svg);
-    
     return sizeSelectContainer
 }
