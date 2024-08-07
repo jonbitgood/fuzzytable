@@ -46,7 +46,8 @@
             fetch('demo/languages.json').then(reply => reply.json())
                 .then(data => {
                     new FuzzyTable('FuzzyTableWapper', data, head, {
-                        filters: customFilters
+                        filters: customFilters,
+                        pageSize: 100
                     });
                 })
         });
