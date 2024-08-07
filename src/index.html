@@ -39,9 +39,10 @@
 </head>
 
 <body>
-    <nav class="text-center mt-4">
-        <a href="#">Base</a>
-        <a href="/languages.html">Languages</a>
+    <nav class="text-center mt-4 text-white">
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="index.html">Base</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="languages.html">Languages Example</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="books.html">Books Example</a>
     </nav>
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
@@ -95,8 +96,9 @@
     filterButtonActive: 'bg-stone-400 dark:bg-stone-950 text-white border-stone-800',
     tableContainer: 'flex flex-col w-full relative z-10 max-w-7xl mx-auto',
     tableColumn: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
-    searchInput: 'block w-full px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-950 dark:bg-stone-800 text-stone-800 dark:text-[#f8f8f0] placeholder-stone-800 dark:placeholder-stone-100',
-    searchBox: 'block w-full px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-950 dark:bg-stone-800 text-stone-800 dark:text-[#f8f8f0] placeholder-stone-800 dark:placeholder-stone-100',
+    searchInput: 'relative indent-6 block w-full h-12 px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-800 dark:bg-stone-700 text-stone-800 dark:text-stone-300 placeholder-stone-800 dark:placeholder-stone-100 rounded-tl-xl',
+    searchIcon: 'absolute block w-6 h-6 z-30 mt-3 mr-2 text-white',
+    searchWrapper: 'w-full h-12',
     sizeSelect: 'appearance-none w-full h-full px-6 bg-white dark:bg-stone-700 dark:text-[#f8f8f0] text-center ring-1 ring-inset ring-stone-400 dark:ring-stone-800 rtl:rounded-tl-lg ltr:rounded-tr-lg',
     tableHeader: 'flex flex-row mt-8 h-12',
     tableCellLink: 'text-[#F8BB39]',

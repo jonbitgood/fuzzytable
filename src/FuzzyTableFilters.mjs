@@ -95,8 +95,8 @@ function applyFilters(c, filterKey, optionKey) {
     c.filters[filterKey].options[optionKey].active = true;
     for (const filter of c.filters) {
         for (const option of filter.options.filter(option => option.active)) {
+            console.log(option)
             tempTable = tempTable.filter((row) => {
-
                 const match = option.value.test(row[filter.filterColumn]);
                 option.active = true;
                 return (option.inverse) ? !match : match}

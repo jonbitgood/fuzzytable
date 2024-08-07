@@ -33,7 +33,7 @@ export default class FuzzyTable {
 
         this.filteredTable = [];
         this.size = 10;
-        this.currentPage = 1;
+        this.currentPage = 0;
         this.pageSizes = [10, 150, 500, 1000, 5000];
         this.classes = mergeClasses(options.classes);
         this.locale = options.locale ?? 'en'

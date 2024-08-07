@@ -38,17 +38,17 @@ export const createTbody = (context, tbody) => {
             }
 
             if (column.link) {
-                const a = document.createElement('a');
-                a.className = context.classes.tableCellLink;
-                a.href = `${column.link.base ? column.link.base : ''}${row[column.link.id]}`;
-                a.appendChild(content);
-                td.appendChild(a);
+                const a = document.createElement('a')
+                a.className = context.classes.tableCellLink
+                a.href = `${column.link.base ? column.link.base : ''}${row[column.link.id]}`
+                a.appendChild(content)
+                td.appendChild(a)
             } else {
-                td.appendChild(content);
+                td.appendChild(content)
             }
 
             if (column.suffix && cellValue !== '') {
-                td.appendChild(context.safeHtml(column.suffix));
+                td.appendChild(context.safeHtml(column.suffix))
             }
 
             tr.appendChild(td);
@@ -71,5 +71,16 @@ const formatCellContent = (cellValue, type, locale) => {
     if (type === 'int') {
         return new Intl.NumberFormat(locale).format(cellValue);
     }
+    if (type === 'date' || type === 'year') {
+        
+        if (type === 'date') {
+            const date = new Date(cellValue);
+            return new Intl.DateTimeFormat(locale).format(date);
+        } else if (type === 'year') {
+            const date = new Date(cellValue,0, 1);
+            return new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(date);
+        }
+    }
+
     return cellValue;
 };

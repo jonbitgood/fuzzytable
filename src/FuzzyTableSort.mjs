@@ -14,7 +14,7 @@ export function sort(context, column) {
     const isDescending = context.sortedCol === id;
     context.sortedCol = isDescending ? "" : id;  // Toggle sorted column
 
-    if (column.type === "int") {
+    if (column.type === "int" || column.type === "year") {
         return context.table.sort((a, b) => isDescending ? b[id] - a[id] : a[id] - b[id]);
     }
 

@@ -21,15 +21,18 @@ const defaultClasses = {
     filterButton: 'text-sm relative px-2 py-1 my-2 w-full flex items-center justify-center cursor-pointer rounded-lg border dark:text-stone-300 dark:bg-stone-800 border-stone-200 dark:border-stone-500 shadow-sm',
     filterButtonActive: 'bg-stone-400 dark:bg-stone-950 dark:text-white border-stone-800',
 
-    tableContainer: 'flex flex-col w-full relative z-10 max-w-7xl mx-auto',
+    tableContainer: 'flex flex-col w-full relative z-10 max-w-7xl mx-auto border-2 border-stone-200 dark:border-stone-800',
     tableColumn: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-stone-300 border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
 
-    searchInput: 'block w-full px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-800 dark:bg-stone-700 text-stone-800 dark:text-stone-300 placeholder-stone-800 dark:placeholder-stone-100 rounded-tl-xl',
-    searchBox: 'block w-full px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-800 dark:bg-stone-800 text-stone-800 dark:text-stone-300 placeholder-stone-800 dark:placeholder-stone-100',
+    searchInput: 'relative indent-6 block w-full h-12 px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-800 dark:bg-stone-700 text-stone-800 dark:text-stone-300 placeholder-stone-800 dark:placeholder-stone-100 ltr:rounded-tl-xl rtl:rounded-tr-xl',
+    searchIcon: 'absolute block w-6 h-6 z-30 mt-3 mx-2 text-white',
+    searchWrapper: 'w-full h-12',
 
-    sizeSelect: 'appearance-none w-full h-full px-6 bg-white dark:bg-stone-700 dark:text-stone-300 text-center border-0 ring-1 ring-inset ring-stone-400 dark:ring-stone-800 rtl:rounded-tl-lg ltr:rounded-tr-lg',
+//    searchBox: 'block w-full h-12 px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-800 dark:bg-stone-800 text-stone-800 dark:text-stone-300 placeholder-stone-800 dark:placeholder-stone-100',
 
-    tableHeader: 'flex flex-row mt-8 h-10',
+    sizeSelect: 'appearance-none w-full h-full px-6 bg-white dark:bg-stone-700 dark:text-stone-300 text-center border-0 ring-1 ring-inset ring-stone-400 dark:ring-stone-800 rtl:md:rounded-tl-lg ltr:md:rounded-tr-lg',
+
+    tableHeader: 'flex flex-row md:mt-8 h-10',
     tableCellLink: 'dark:text-white',
     tableCellSubtitle: 'block not-italic text-stone-400 dark:text-stone-700',
     table: 'w-full',
