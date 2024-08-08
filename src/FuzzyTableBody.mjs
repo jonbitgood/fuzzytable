@@ -28,6 +28,10 @@ export const createTbody = (context, tbody) => {
                 content.appendChild(createSVG(column.icon, row[column.icon.id] ?? ''));
             }
 
+            if(column.img) {
+                content.appendChild(createImg(column.img, row[column.icon.id] ?? ''));
+            }
+
             content.appendChild(document.createTextNode(formattedValue));
 
             if(column.subtitle) {
@@ -57,15 +61,28 @@ export const createTbody = (context, tbody) => {
     }
 }
 
+
+
 const createSVG = (icon, value) => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
     use.setAttribute('href', `${icon.base}${value}`);
     use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `#${value}`);
-    svg.setAttribute('class',icon.class);
+    if(icon.class) {
+        svg.setAttribute('class', icon.class);    
+    }
     svg.appendChild(use);
     return svg;
 };
+
+const createImg = (img, value) => {
+    const imgEl = document.createElement('img');
+    img.setAttribute('src', `${img.base}${value}`);
+    if(img.class) {
+        img.setAttribute('class', img.class);        
+    }
+    return img;
+}
 
 const formatCellContent = (cellValue, type, locale) => {
     if (type === 'int') {
