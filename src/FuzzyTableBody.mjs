@@ -77,11 +77,7 @@ const createSVG = (icon, value) => {
 
 const createImg = (img, value) => {
     const imgEl = document.createElement('img');
-    let imgUrl = `${img.base}${value}`;
-    if(img.ext) {
-        imgUrl += img.ext;
-    }
-    imgEl.setAttribute('src', imgUrl);
+    imgEl.setAttribute('src', `${img.base}${value}${img.ext ?? ''}`);
     if(img.class) {
         imgEl.setAttribute('class', img.class);        
     }
