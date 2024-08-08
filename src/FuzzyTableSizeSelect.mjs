@@ -26,6 +26,9 @@ export default function createSizeSelector(context) {
         const option = document.createElement('option')
         option.value = pageSize;
         option.textContent = numberFormatter.format(pageSize)
+        if (pageSize === context.size) {
+            option.selected = true;
+        }
         select.appendChild(option)
     }
     

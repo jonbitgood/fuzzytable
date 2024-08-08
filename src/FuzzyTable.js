@@ -34,7 +34,7 @@ export default class FuzzyTable {
         this.filteredTable = [];
         this.size = (options.pageSize ?? this.container?.dataset?.pageSize) ?? 10;
         this.currentPage = 0;
-        this.pageSizes = [10, 150, 500, 1000, 5000];
+        this.pageSizes = (options.pageSizes ?? this.container?.dataset?.pageSizes) ?? [10, 150, 500, 1000, 5000];
         this.classes = mergeClasses(options.classes);
         this.locale = options.locale ?? 'en'
         this.t = options.t ?? {search_placeholder: 'Search'}

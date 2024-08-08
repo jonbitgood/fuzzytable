@@ -29,7 +29,7 @@ export const createTbody = (context, tbody) => {
             }
 
             if(column.img) {
-                content.appendChild(createImg(column.img, row[column.icon.id] ?? ''));
+                content.appendChild(createImg(column.img, row[column.img.id] ?? ''));
             }
 
             content.appendChild(document.createTextNode(formattedValue));
@@ -77,11 +77,15 @@ const createSVG = (icon, value) => {
 
 const createImg = (img, value) => {
     const imgEl = document.createElement('img');
-    img.setAttribute('src', `${img.base}${value}`);
-    if(img.class) {
-        img.setAttribute('class', img.class);        
+    let imgUrl = `${img.base}${value}`;
+    if(img.ext) {
+        imgUrl += img.ext;
     }
-    return img;
+    imgEl.setAttribute('src', imgUrl);
+    if(img.class) {
+        imgEl.setAttribute('class', img.class);        
+    }
+    return imgEl;
 }
 
 const formatCellContent = (cellValue, type, locale) => {
