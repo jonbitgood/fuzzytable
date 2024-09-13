@@ -1,3 +1,5 @@
+import paginationUpdate from './FuzzyTablePagination.mjs'
+
 /**
  * Creates a search input element for filtering table data. This search box dynamically filters the table
  * based on user input. If the search box is empty, it applies active filters from the context to the data.
@@ -48,8 +50,10 @@ export default function createSearchBox(context) {
 
         context.currentPage = 0;
         context.updateTable();
+        paginationUpdate(context)
     }
     context.searchBox = searchBox
+    
 
     return label
 }
