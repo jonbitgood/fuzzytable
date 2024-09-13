@@ -1,7 +1,7 @@
 /**
  * Creates a UI component for downloading data in JSON or TSV format.
  * This component consists of a details element that toggles visibility
- * of download options on click.
+ * of download options on click and closes if clicked outside.
  *
  * @param {Object} context - The context object containing the FuzzyTable
  * @returns {HTMLElement} - The details element containing the downloadable options.
@@ -37,12 +37,19 @@ export default function createDownloadUI(context) {
         dropdown.appendChild(button);
     }
 
-
     details.appendChild(summary);
     details.appendChild(dropdown);
 
-    return details
+    // Add event listener to close the details element if clicked outside
+    document.addEventListener('click', (event) => {
+        if (!details.contains(event.target) && details.hasAttribute('open')) {
+            details.removeAttribute('open');
+        }
+    });
+
+    return details;
 }
+
 
 /**
  * Triggers a download of the table data in either JSON or TSV format.
