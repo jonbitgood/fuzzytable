@@ -51,31 +51,49 @@ export default function createDownloadUI(context) {
 }
 
 
+
 /**
- * Triggers a download of the table data in either JSON or TSV format.
+ * Triggers a download of the table data in JSON, TSV, CSV, or plain text format.
  * This function creates a Blob from the data and uses a temporary download link to initiate the download.
  *
  * @param {Array} data - The array of data objects to be downloaded.
- * @param {string} type - The type of file to generate: "JSON" or "TSV".
+ * @param {string} type - The type of file to generate: "JSON", "TSV", OR "CSV"
  */
 function downloadData(data, type) {
-    const convertArray2TSV = (data) => {
-        const headings = Object.keys(data[0]).join('\t');
-        const rows = data.map(row => Object.values(row).join('\t')).join('\n');
+    const convertArrayToSeparatedValues = (data, separator) => {
+        const headings = Object.keys(data[0]).join(separator);
+        const rows = data.map(row => Object.values(row).join(separator)).join('\n');
         return `${headings}\n${rows}`;
     };
 
-    const isTSV = type === 'TSV';
-    const fileType = isTSV ? 'text/tsv' : 'application/json';
-    const fileName = isTSV ? 'data.tsv' : 'data.json';
-    const fileContent = isTSV ? convertArray2TSV(data) : JSON.stringify(data);
+    let fileType;
+    let fileName;
+    let fileContent;
+
+    switch (type) {
+        case 'TSV':
+            fileType = 'text/tab-separated-values';
+            fileName = 'data.tsv';
+            fileContent = convertArrayToSeparatedValues(data, '\t');
+            break;
+        case 'CSV':
+            fileType = 'text/csv';
+            fileName = 'data.csv';
+            fileContent = convertArrayToSeparatedValues(data, ',');
+            break;
+        default:
+            fileType = 'application/json';
+            fileName = 'data.json';
+            fileContent = JSON.stringify(data, null, 2);
+            break;
+    }
 
     const blob = new Blob([fileContent], { type: fileType });
 
     // Create a link and trigger the download
     const link = document.createElement('a');
     link.download = fileName;
-    link.href = window.URL.createObjectURL(blob);
+    link.href = URL.createObjectURL(blob);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

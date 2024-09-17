@@ -18,8 +18,11 @@ export const createTbody = (context, tbody) => {
 
         for (const column of context.head) {
             const td = document.createElement('td');
-            td.className = `${column.class} ${column.id} ${context.classes.tableColumn}`;
-            td.setAttribute('data-type', column.type);
+            td.className = `${column.class ?? ''} ${column.id} ${context.classes.tableColumn ?? ''}`;
+            if(column.type) {
+                td.setAttribute('data-type', column.type);
+            }
+            
 
             const cellValue = row[column.id] ?? '';
             const formattedValue = formatCellContent(cellValue, column.type, context.locale);

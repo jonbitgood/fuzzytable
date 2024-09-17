@@ -12,10 +12,16 @@
 export function sort(context, column) {
     const id = column.id;
     const isDescending = context.sortedCol === id;
-    context.sortedCol = isDescending ? "" : id;  // Toggle sorted column
+    context.sortedCol = isDescending ? "" : id; // Toggle sorted column
 
     if (column.type === "int" || column.type === "year") {
-        return context.table.sort((a, b) => isDescending ? b[id] - a[id] : a[id] - b[id]);
+
+        return context.table.sort((a, b) => {
+            const valA = a[id] !== undefined && a[id] !== null ? Number(a[id]) : -Infinity;
+            const valB = b[id] !== undefined && b[id] !== null ? Number(b[id]) : -Infinity;
+
+            return isDescending ? valB - valA : valA - valB;
+        });
     }
 
     return context.table.sort((a, b) => {

@@ -12,8 +12,8 @@ export default class FuzzyTable {
     constructor(containerId, data, head, options) {
         this.container = document.getElementById(containerId);
         if(data) {
-            this.data = [...data]; // Holder for inital data
-            this.table = [...data]; // User's current view
+            this.data = [...data];
+            this.table = [...data];
         } else {
             this.data = [...JSON.parse(this.container.dataset.rows)];
             this.table = [...JSON.parse(this.container.dataset.rows)];
@@ -26,7 +26,7 @@ export default class FuzzyTable {
         this.head = head;
 
         if(head) {
-            this.head = head; // Holder for inital data
+            this.head = head;
         } else {
             this.head = [...JSON.parse(this.container.dataset.head)];
         }
@@ -35,10 +35,16 @@ export default class FuzzyTable {
         this.size = (options.pageSize ?? this.container?.dataset?.pageSize) ?? 10;
         this.currentPage = 0;
         this.pageSizes = (options.pageSizes ?? this.container?.dataset?.pageSizes) ?? [10, 150, 500, 1000, 5000];
+        this.paginationArrowButtonsDisabled = options?.paginationArrowButtonsDisabled
         this.classes = mergeClasses(options.classes);
+        
         this.locale = options.locale ?? 'en'
+        this.numberFormatter = new Intl.NumberFormat(this.locale);
         this.t = options.t ?? {search_placeholder: 'Search'}
         this.vernacularNumerals = options.vernacularNumerals ?? true;
+
+        
+
 
         this.fuse = new Fuse(this.table, {
             shouldSort: true,
@@ -62,7 +68,6 @@ export default class FuzzyTable {
         });
     }
 
-    // 
     render = () => {
         this.container.innerHTML = '';
         createFilters(this)
@@ -80,43 +85,38 @@ export default class FuzzyTable {
         table.className = this.classes.table;
     
         const thead = document.createElement('thead');
-        thead.className = this.classes.thead;
+        if(this.classes.thead) {
+            thead.className = this.classes.thead;
+        }
 
         for (const column of this.head) {
             const th = document.createElement('th');
-            th.className = `${this.classes.th} ${column.class}`;
+            th.className = `${this.classes.th ?? ''} ${column.class ?? ''}`;
             th.textContent = column.name;
-        
-            // Create span elements for both sorting arrows
             const arrowUp = document.createElement('span');
             const arrowDown = document.createElement('span');
             arrowUp.className = this.classes.arrowUp;
             arrowDown.className = this.classes.arrowDown;
-            arrowUp.textContent = '▲'; // Ascending arrow
-            arrowDown.textContent = '▼'; // Descending arrow
-            arrowUp.style.opacity = 0.35; // Low opacity by default
-            arrowDown.style.opacity = 0.35; // Low opacity by default
+            arrowUp.textContent = '▲';
+            arrowDown.textContent = '▼';
+            arrowUp.style.opacity = 0.35;
+            arrowDown.style.opacity = 0.35;
         
             th.appendChild(arrowUp);
             th.appendChild(arrowDown);
         
-            // Add click event to sort and toggle arrow opacity
             th.addEventListener('click', () => {
-                // Reset opacity for all arrows in all columns
                 for (const arrow of document.querySelectorAll('th span')) {
                     arrow.style.opacity = 0.35;
                 }
-        
-                // Determine current sort direction and adjust arrow opacity accordingly
                 const isAscending = th.classList.toggle('ascending');
                 if (isAscending) {
-                    arrowUp.style.opacity = 1; // Full opacity for active arrow
+                    arrowUp.style.opacity = 1;
                     arrowDown.style.opacity = 0.35;
                 } else {
-                    arrowDown.style.opacity = 1; // Full opacity for active arrow
+                    arrowDown.style.opacity = 1;
                     arrowUp.style.opacity = 0.35;
                 }
-        
                 this.table = sort(this, column);
                 this.updateTable();
             });
@@ -128,8 +128,10 @@ export default class FuzzyTable {
         table.appendChild(thead);
         const tbody = document.createElement('tbody');
         tbody.id = "fuzzy-rows";
-        tbody.className = this.classes.tbody;
-
+        if(this.classes.tbody) {
+            tbody.className = this.classes.tbody;
+        }
+        
         createTbody(this, tbody);
         table.appendChild(tbody);
 
@@ -140,11 +142,11 @@ export default class FuzzyTable {
     }
 
     safeHtml = (html) => {
-        let tempDiv = document.createElement('div');
+        const tempDiv = document.createElement('div');
         tempDiv.innerHTML = html;
     
         for (const tag of ['script', 'iframe', 'link', 'style', 'object', 'embed']) {
-            let nodes = tempDiv.getElementsByTagName(tag);
+            const nodes = tempDiv.getElementsByTagName(tag);
             for (let i = nodes.length - 1; i >= 0; i--) {
                 nodes[i].parentNode.removeChild(nodes[i]);
             }

@@ -9,10 +9,14 @@ export default function CreatePagination(context, tableContainer) {
     if (!context.paginationNav) {
         context.paginationNav = document.createElement('nav');
         context.paginationNav.id = 'paginationNav';
-        context.paginationNav.className = context.classes.paginationNav;
+        if(context.classes.paginationNav) {
+            context.paginationNav.className = context.classes.paginationNav;
+        }
 
         const tablePagination = document.createElement('div');
-        tablePagination.className = context.classes.tablePagination;
+        if(context.classes.tablePagination) {
+            tablePagination.className = context.classes.tablePagination;
+        }
         tablePagination.id = 'paginationContainer';
         tablePagination.appendChild(context.paginationNav);
         tableContainer.appendChild(tablePagination);
@@ -27,20 +31,58 @@ export default function CreatePagination(context, tableContainer) {
  * 
  * @param {Object} context - The context with pagination data and configurations.
  */
-export function paginationUpdate(context) {
+export const paginationUpdate = (context) => {
     const nav = context.paginationNav;
-    nav.innerHTML = '';  // Clear previous pagination buttons
+    const totalPages = Math.ceil(context.table.length / context.size);
+    context.displayPages = calculateDisplayPages(context.currentPage, totalPages, 4);
+    nav.innerHTML = '';
 
-    const displayPages = calculateDisplayPages(context.currentPage, Math.ceil(context.table.length / context.size), 4);
     const fragment = document.createDocumentFragment();
 
-    for (const page of displayPages) {
+    if (context.currentPage > 0 && !context.paginationArrowButtonsDisabled) {
+        const backArrow = createArrowElement(context, 'back');
+        fragment.appendChild(backArrow);
+    }
+
+    for (const page of context.displayPages) {
         const pageElement = createPageElement(context, page);
         fragment.appendChild(pageElement);
     }
 
+    // Add forward arrow if not on the last page
+    if (context.currentPage < totalPages - 1 && !context.paginationArrowButtonsDisabled) {
+        const forwardArrow = createArrowElement(context, 'forward');
+        fragment.appendChild(forwardArrow);
+    }
+
     nav.appendChild(fragment);
+};
+
+/**
+ * Creates an arrow element (back or forward) for pagination navigation.
+ * 
+ * @param {Object} context - The context containing the current page and classes for styling.
+ * @param {String} direction - The direction of the arrow ('back' or 'forward').
+ * @returns {HTMLElement} The arrow button element.
+ */
+function createArrowElement(context, direction) {
+    const button = document.createElement('button');
+    button.textContent = direction === 'back' ? '<' : '>';
+    button.classList.add(...context.classes.paginationButton.split(' '));
+
+    if (context.classes.paginationArrow) {
+        button.classList.add(...context.classes.paginationArrow.split(' '));
+    }
+
+    button.onclick = () => {
+        context.currentPage += direction === 'back' ? -1 : 1;
+        context.updateTable();
+        paginationUpdate(context);
+    };
+
+    return button;
 }
+
 
 /**
  * Creates a single page element for pagination, which could be a number button or an ellipsis.
@@ -52,20 +94,25 @@ export function paginationUpdate(context) {
 function createPageElement(context, page) {
     if (page === '...') {
         const span = document.createElement('span');
-        span.className = context.classes.paginationButton;
+        span.classList.add(...context.classes.paginationButton.split(' '));
         span.textContent = '...';
         return span;
     }
 
-    const numberFormatter = new Intl.NumberFormat(context.locale);
     const button = document.createElement('button');
-    button.textContent = numberFormatter.format(page + 1);
-    button.className = `${context.classes.paginationButton} ${context.currentPage === page ? context.classes.paginationButtonCurrent : ''}`;
+    button.textContent = context.numberFormatter.format(page + 1);
+    button.classList.add(...context.classes.paginationButton.split(' '));
+
+    if (context.currentPage === page) {
+        button.classList.add(...context.classes.paginationButtonCurrent.split(' '));
+    }
+
     button.onclick = () => {
         context.currentPage = page;
         context.updateTable();
         paginationUpdate(context);
     };
+
     return button;
 }
 
@@ -78,23 +125,25 @@ function createPageElement(context, page) {
  * @returns {Array} An array of page indices and ellipsis where appropriate.
  */
 function calculateDisplayPages(current, total, sides) {
-    let start = Math.max(current - sides, 0);
-    let end = Math.min(current + sides, total - 1);
-    let pagesArray = [];
+    const pages = [];
+    const start = Math.max(current - sides, 0);
+    const end = Math.min(current + sides, total - 1);
 
-    if (start > 0) {
-        pagesArray.push(0);
-        if (start > 1) pagesArray.push('...');
+    if (start > 1) {
+        pages.push(0, '...');
+    } else if (start === 1) {
+        pages.push(0);
     }
 
     for (let i = start; i <= end; i++) {
-        pagesArray.push(i);
+        pages.push(i);
     }
 
-    if (end < total - 1) {
-        if (end < total - 2) pagesArray.push('...');
-        pagesArray.push(total - 1);
+    if (end < total - 2) {
+        pages.push('...', total - 1);
+    } else if (end === total - 2) {
+        pages.push(total - 1);
     }
 
-    return pagesArray;
+    return pages;
 }
