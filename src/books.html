@@ -46,7 +46,6 @@
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
         import FuzzyTable from './FuzzyTable.js'
-
         const head = [
             { id: "ln", name: "语言", subtitle: "iso", link: { base: `https://find.bible/en/languages/`, id: 'iso' } },
             { id: "tt", name: "标题", subtitle: "tv", class: "hidden sm:table-cell" },
@@ -59,7 +58,6 @@
     sortArrow: '',
     arrowUp: 'absolute right-2 top-1.5 text-sm',
     arrowDown: 'absolute right-2 bottom-1.5 text-sm',
-    paginationButton: 'w-16 h-10 inline-flex justify-center items-center border dark:border-stone-900',
     paginationButtonCurrent: 'text-lg font-bold text-red-500',
     paginationNav: 'relative z-0 flex mt-4 justify-center rounded-md -space-x-px dark:text-[#f8f8f0]',
     downloadButton: 'relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 dark:text-[#f8f8f0] ring-1 ring-inset ring-stone-400 dark:ring-stone-800 focus:z-10',
@@ -74,7 +72,7 @@
     filterButtonActive: 'bg-stone-400 dark:bg-stone-950 text-white border-stone-800',
     tableContainer: 'flex flex-col w-full relative z-10 max-w-7xl mx-auto',
     tableColumn: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
-    sizeSelect: 'appearance-none w-full h-full px-6 bg-white dark:bg-stone-700 dark:text-[#f8f8f0] text-center ring-1 ring-inset ring-stone-400 dark:ring-stone-800 rtl:rounded-tl-lg ltr:rounded-tr-lg',
+    sizeSelect: 'appearance-none w-full h-full bg-white dark:bg-stone-700 dark:text-[#f8f8f0] text-center ring-1 ring-inset ring-stone-400 dark:ring-stone-800 rtl:rounded-tl-lg ltr:rounded-tr-lg',
     tableHeader: 'flex flex-row mt-8 h-12',
     tableCellLink: 'text-red-500',
     table: 'w-full',

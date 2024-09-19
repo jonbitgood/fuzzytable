@@ -9,7 +9,7 @@
  */
 export default function createSizeSelector(context) {
     const sizeSelectContainer = document.createElement('div');
-    sizeSelectContainer.className = 'relative inline-block';
+    if(context.classes.sizeSelectContainer) sizeSelectContainer.className = context.classes.sizeSelectContainer;
     const label = document.createElement('label')
     label.setAttribute('for', 'fuzzy_size_select')
     label.className = 'sr-only'
@@ -17,7 +17,7 @@ export default function createSizeSelector(context) {
     sizeSelectContainer.appendChild(label)
     const select = document.createElement('select');
     select.id = 'fuzzy_size_select';
-    select.className = context.classes.sizeSelect;
+    if(context.classes.sizeSelect) select.className = context.classes.sizeSelect;
     sizeSelectContainer.appendChild(select);
 
     const numberFormatter = new Intl.NumberFormat(context.locale);
