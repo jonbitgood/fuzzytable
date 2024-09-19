@@ -35,6 +35,7 @@ export default function createSizeSelector(context) {
     select.value = context.size;
     select.addEventListener('change', (e) => {
         context.size = e.target.value;
+        context.currentPage = 0;
         context.paginationUpdate();
         context.updateTable();
     });
