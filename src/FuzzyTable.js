@@ -37,14 +37,14 @@ export default class FuzzyTable {
         this.pageSizes = (options.pageSizes ?? this.container?.dataset?.pageSizes) ?? [10, 150, 500, 1000, 5000];
         this.paginationArrowButtonsDisabled = options?.paginationArrowButtonsDisabled
         this.classes = mergeClasses(options.classes);
+
+        this.checkMark = (options?.checkMark ?? this.container?.dataset?.checkMark) ?? '✓'
+        this.xMark = (options?.xMark ?? this.container?.dataset?.xMark) ?? '✗'
         
         this.locale = options.locale ?? 'en'
         this.numberFormatter = new Intl.NumberFormat(this.locale);
         this.t = options.t ?? {search_placeholder: 'Search'}
         this.vernacularNumerals = options.vernacularNumerals ?? true;
-
-        
-
 
         this.fuse = new Fuse(this.table, {
             shouldSort: true,
@@ -54,9 +54,9 @@ export default class FuzzyTable {
             distance: 50,
             maxPatternLength: 12,
             minMatchCharLength: 1,
+            useExtendedSearch: true,
             keys: this.head.filter(column => column.searchable !== false).map(column => column.id)
         })
-
         this.render();
     }
 
@@ -124,7 +124,6 @@ export default class FuzzyTable {
             thead.appendChild(th);
         }
         
-
         table.appendChild(thead);
         const tbody = document.createElement('tbody');
         tbody.id = "fuzzy-rows";

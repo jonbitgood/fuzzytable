@@ -92,7 +92,6 @@ const formatCellContent = (cellValue, type, locale) => {
         return new Intl.NumberFormat(locale).format(cellValue);
     }
     if (type === 'date' || type === 'year') {
-        
         if (type === 'date') {
             const date = new Date(cellValue);
             return new Intl.DateTimeFormat(locale).format(date);
@@ -100,6 +99,9 @@ const formatCellContent = (cellValue, type, locale) => {
             const date = new Date(cellValue,0, 1);
             return new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(date);
         }
+    }
+    if (type === 'bool') {
+        return (cellValue) ? context.checkMark : context.xMark
     }
 
     return cellValue;

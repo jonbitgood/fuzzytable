@@ -126,10 +126,7 @@ function applyFilters(c, filterKey, optionKey) {
         const fieldset = filterContainer.children[filterKey * 2 + 1]; // Accessing the correct fieldset based on index
         filter.options.forEach((option, optionKey) => {
             const button = fieldset.children[optionKey];
-
-
             const classList = c.classes.filterButtonActive.split(' ');
-
             for (const className of classList) {
                 if (option.active) {
                     button.classList.add(className);
@@ -137,7 +134,6 @@ function applyFilters(c, filterKey, optionKey) {
                     button.classList.remove(className);
                 }
             }
-
         });
     });
 }
