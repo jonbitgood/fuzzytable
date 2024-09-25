@@ -14,7 +14,7 @@ export function sort(context, column) {
     const isDescending = context.sortedCol === id;
     context.sortedCol = isDescending ? "" : id; // Toggle sorted column
 
-    if (column.type === "int" || column.type === "year") {
+    if (column.type === "int" || column.type === "year" || column.type === "bool") {
 
         return context.table.sort((a, b) => {
             const valA = a[id] !== undefined && a[id] !== null ? Number(a[id]) : -Infinity;

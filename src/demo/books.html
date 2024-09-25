@@ -39,13 +39,14 @@
 
 <body>
     <nav class="text-center mt-4 text-white">
-        <a class="bg-stone-800 mx-2 px-2 rounded" href="index.html">Base</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="base.html">Base</a>
         <a class="bg-stone-800 mx-2 px-2 rounded" href="languages.html">Languages Example</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="alphabets.html">Alphabets Example</a>
         <a class="bg-stone-800 mx-2 px-2 rounded" href="books.html">Books Example</a>
     </nav>
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
-        import FuzzyTable from './FuzzyTable.js'
+        import FuzzyTable from '../FuzzyTable.js'
         const head = [
             { id: "ln", name: "语言", subtitle: "iso", link: { base: `https://find.bible/en/languages/`, id: 'iso' } },
             { id: "tt", name: "标题", subtitle: "tv", class: "hidden sm:table-cell" },
@@ -84,7 +85,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('demo/books.json').then(reply => reply.json())
+            fetch('books.json').then(reply => reply.json())
                 .then(data => {
                     new FuzzyTable('FuzzyTableWapper', data, head, {
                         classes: classesOverride,

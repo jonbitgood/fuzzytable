@@ -25,7 +25,7 @@ export const createTbody = (context, tbody) => {
             
 
             const cellValue = row[column.id] ?? '';
-            const formattedValue = formatCellContent(cellValue, column.type, context.locale);
+            const formattedValue = formatCellContent(context, cellValue, column.type, context.locale);
             const content = new DocumentFragment();
             if (column.icon) {
                 content.appendChild(createSVG(column.icon, row[column.icon.id] ?? ''));
@@ -87,7 +87,7 @@ const createImg = (img, value) => {
     return imgEl;
 }
 
-const formatCellContent = (cellValue, type, locale) => {
+const formatCellContent = (context, cellValue, type, locale) => {
     if (type === 'int') {
         return new Intl.NumberFormat(locale).format(cellValue);
     }

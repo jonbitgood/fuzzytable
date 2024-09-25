@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,19 +34,20 @@
             font-size:x-small;
             margin-right:5px;
         }
+        
     </style>
 </head>
 
 <body>
-    <nav class="text-center mt-4">
-        <a href="#">Base</a>
-        <a href="/languages.html">Languages</a>
+    <nav class="text-center mt-4 text-white">
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="base.html">Base</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="languages.html">Languages Example</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="alphabets.html">Alphabets Example</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="books.html">Books Example</a>
     </nav>
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
-    <script src="./dist/FuzzyTable.js"></script>
-    <script>
-
-
+    <script type="module">
+        import FuzzyTable from '../FuzzyTable.js'
         const head = [
             { id: "name", name: "دولة", link: { base: `https://en.wikipedia.org/wiki/ISO_3166-2:`, id: 'id' }, icon: { base: '/demo/flags.svg#', id: 'id', class: "h-5 w-5 drop-shadow-md inline-block ml-3" } },
             { id: "population", name: "سكان", type: "int", searchable: false, class: "text-right" },
@@ -76,76 +76,16 @@
             ]
         }]
 
-        const classesOverride = {
-            pagination: '',
-    sortArrow: '',
-    arrowUp: 'absolute right-2 top-1.5 text-sm',
-    arrowDown: 'absolute right-2 bottom-1.5 text-sm',
-    paginationButton: 'w-10 h-10 inline-flex justify-center items-center border dark:border-stone-900',
-    paginationButtonCurrent: 'text-lg font-bold text-[#F8BB39]',
-    paginationNav: 'relative z-0 flex mt-4 justify-center rounded-md -space-x-px dark:text-[#f8f8f0]',
-    downloadButton: 'relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 dark:text-[#f8f8f0] ring-1 ring-inset ring-stone-400 dark:ring-stone-800 focus:z-10',
-    downloadDropdown: 'absolute left-0 z-50 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-stone-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
-    downloadDropdownButton: 'text-stone-700 dark:text-[#f8f8f0] hover:dark:bg-stone-900 hover:bg-stone-200 w-full block px-4 py-2 text-sm text-left',
-    downloadDropdownInfo: 'text-center text-xs text-stone-700 dark:text-[#f8f8f0] py-2',
-    fieldsetWrap: 'block mt-8 w-full bg-gray-200 dark:bg-stone-700 text-sm font-semibold p-3 text-stone-900 dark:text-[#f8f8f0] border-b border-stone-200 dark:border-stone-500 rounded-t-lg',
-    fieldsetFilterWrap: 'mb-4 dark:bg-stone-900 border border-stone-200 dark:border-stone-950 p-2',
-    fieldset: 'mb-4 dark:bg-stone-900 border border-stone-200 dark:border-stone-950 p-2',
-    filterContainer: 'hidden sm:flex flex-col lg:w-1/5 ltr:mr-4 rtl:ml-4',
-    filterButton: 'text-sm relative px-2 py-1 my-2 w-full flex items-center justify-center cursor-pointer rounded-lg border dark:text-[#f8f8f0] dark:bg-stone-800 border-stone-200 dark:border-stone-500 shadow-sm',
-    filterButtonActive: 'bg-stone-400 dark:bg-stone-950 text-white border-stone-800',
-    tableContainer: 'flex flex-col w-full relative z-10 max-w-7xl mx-auto',
-    tableColumn: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
-    searchInput: 'block w-full px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-950 dark:bg-stone-800 text-stone-800 dark:text-[#f8f8f0] placeholder-stone-800 dark:placeholder-stone-100',
-    searchBox: 'block w-full px-4 text-sm shadow-lg border border-stone-400 dark:border-stone-950 dark:bg-stone-800 text-stone-800 dark:text-[#f8f8f0] placeholder-stone-800 dark:placeholder-stone-100',
-    sizeSelect: 'appearance-none w-full h-full px-6 bg-white dark:bg-stone-700 dark:text-[#f8f8f0] text-center ring-1 ring-inset ring-stone-400 dark:ring-stone-800 rtl:rounded-tl-lg ltr:rounded-tr-lg',
-    tableHeader: 'flex flex-row mt-8 h-12',
-    tableCellLink: 'text-[#F8BB39]',
-    table: 'w-full',
-    thead: 'bg-stone-100 dark:bg-stone-700',
-    tbody: 'divide-y divide-stone-200 dark:divide-stone-800 bg-white dark:bg-stone-800 border border-stone-500 dark:border-none',
-    th: 'relative px-1 py-3 rtl:pr-7 ltr:text-left rtl:text-right text-sm font-semibold text-stone-900 dark:text-[#f8f8f0] cursor-pointer',
-    tr: 'dark:even:bg-stone-900',
-    td: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
-        }
-
-    // "editor.background": "#36312C"
-    // "editorCursor.foreground": "#f8f8f0"
-    // "editor.foreground": "#EBD1B7"
-    // "editorWhitespace.foreground": "#3b3a32"
-    // "editor.lineHighlightBackground": "#45403B"
-    // "editor.selectionBackground": "#DB784D4D"
-    // "activityBar.background": "#2F2B26"
-    // "statusBar.noFolderBackground": "#2F2B26"
-    // "activityBarBadge.background": "#D76538"
-    // "sideBar.background": "#2F2B26"
-    // "sideBarSectionHeader.background": "#26221E"
-    // "activityBar.foreground": "#7a7a7a"
-    // "statusBar.background": "#36312C"
-    // "statusBar.foreground": "#7a7a7a"
-    // "statusBar.debuggingForeground": "#fff"
-    // "editorWarning.foreground": "#F8BB39"
-    // "editorInfo.foreground": "#00A8C6"
-    // "debugIcon.breakpointForeground": "#D76538"
-    // "editorError.foreground": "#D76538"
-    // "sash.hoverBorder": "#db784d85"
-    // "editorBracketHighlight.foreground1": "#D76538"
-    // "editorBracketHighlight.foreground2": "#F8BB39"
-    // "editorBracketHighlight.foreground3": "#00A8C6"
-    // "editorBracketHighlight.foreground4": "#95CC5E"
-    // "editorBracketHighlight.foreground5": "#e61f44"
-    // "editorBracketHighlight.foreground6": "#D76538"
-
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('demo/countries.json').then(reply => reply.json())
+            fetch('countries.json').then(reply => reply.json())
                 .then(data => {
                     new FuzzyTable('FuzzyTableWapper', data, head, {
-                        classes: classesOverride,
                         t: {search_placeholder: 'يبحث'},
                         locale: 'ar-EG',
-                        filters: customFilters
+                        filters: customFilters,
+                        pageSize: 25
                     });
-                })
+            })
         })
 
     </script>
