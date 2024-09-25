@@ -22,7 +22,7 @@ export default function createSizeSelector(context) {
 
     const numberFormatter = new Intl.NumberFormat(context.locale);
     
-    for (const pageSize of context.pageSizes.filter(size => size <= context.data.length)) {
+    for (const pageSize of context.pageSizes) {
         const option = document.createElement('option')
         option.value = pageSize;
         option.textContent = numberFormatter.format(pageSize)
