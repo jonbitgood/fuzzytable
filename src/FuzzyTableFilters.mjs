@@ -10,7 +10,19 @@ import Fuse from './Fuse.mjs'
  */
 export default function createFilters(context) {
     if (context.filters.length > 0) {
-        context.container.appendChild(createFilterContainer(context, applyFilters));
+        const filterContainer = document.createElement('div');
+        filterContainer.className = context.classes.filterContainer;
+        filterContainer.id = 'fuzzy_filters';
+        context.filters.forEach((filter, filterKey) => {
+            const filterName = document.createElement('div');
+            filterName.className = context.classes.fieldsetWrap;
+            filterName.textContent = filter.name;
+            filterContainer.appendChild(filterName);
+            const fieldset = createFilterFieldset(filter, filterKey, applyFilters, context);
+            filterContainer.appendChild(fieldset);
+        });
+
+        context.container.appendChild(filterContainer);
     }
 }
 
@@ -47,31 +59,6 @@ function createFilterFieldset(filter, filterKey, applyFilters, context) {
         fieldset.appendChild(button);
     });
     return fieldset;
-}
-
-/**
- * Creates a container for all filter elements, structured with individual fieldsets for each filter.
- * 
- * @param {Object} context - The context with configurations for filters and styling.
- * @param {Function} applyFilters - The function to apply filter logic.
- * @returns {HTMLElement} The created filter container element.
- */
-function createFilterContainer(context, applyFilters) {
-    const filterContainer = document.createElement('div');
-    filterContainer.className = context.classes.filterContainer;
-    filterContainer.id = 'fuzzy_filters';
-
-    context.filters.forEach((filter, filterKey) => {
-        const filterName = document.createElement('div');
-        filterName.className = context.classes.fieldsetWrap;
-        filterName.textContent = filter.name;
-        filterContainer.appendChild(filterName);
-
-        const fieldset = createFilterFieldset(filter, filterKey, applyFilters, context);
-        filterContainer.appendChild(fieldset);
-    });
-
-    return filterContainer;
 }
 
 /**

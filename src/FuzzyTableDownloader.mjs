@@ -1,17 +1,15 @@
 /**
  * Creates a UI component for downloading data in JSON or TSV format.
- * This component consists of a details element that toggles visibility
- * of download options on click and closes if clicked outside.
- *
- * @param {Object} context - The context object containing the FuzzyTable
- * @returns {HTMLElement} - The details element containing the downloadable options.
+ * This component toggles a table download filetype options dropdown.
+ * @param {Object} context - The context object for passed in options
+ * @returns {HTMLElement} - The details HTMLElement for the downloads
  */
 export default function createDownloadUI(context) {
-    const types = ['JSON', 'TSV'];
+    const types = ['JSON', 'TSV', 'CSV'];
 
     const details = document.createElement('details');
-    details.className = 'relative';
     details.id = 'fuzzy_download_details';
+    details.className = 'relative';
 
     const summary = document.createElement('summary');
     summary.className = context.classes.downloadButton;
@@ -39,8 +37,6 @@ export default function createDownloadUI(context) {
 
     details.appendChild(summary);
     details.appendChild(dropdown);
-
-    // Add event listener to close the details element if clicked outside
     document.addEventListener('click', (event) => {
         if (!details.contains(event.target) && details.hasAttribute('open')) {
             details.removeAttribute('open');
@@ -89,8 +85,6 @@ function downloadData(data, type) {
     }
 
     const blob = new Blob([fileContent], { type: fileType });
-
-    // Create a link and trigger the download
     const link = document.createElement('a');
     link.download = fileName;
     link.href = URL.createObjectURL(blob);

@@ -45,7 +45,6 @@ export default class FuzzyTable {
         this.numberFormatter = new Intl.NumberFormat(this.locale);
         this.t = options.t ?? {search_placeholder: 'Search'}
         this.vernacularNumerals = options.vernacularNumerals ?? true;
-
         this.fuse = new Fuse(this.table, {
             shouldSort: true,
             includeMatches: true,

@@ -58,6 +58,10 @@ export const createTbody = (context, tbody) => {
                 td.appendChild(context.safeHtml(column.suffix))
             }
 
+            if(column.hideZeros && cellValue === 0) {
+                td.classList.add("hidden");
+            }
+
             tr.appendChild(td);
         }
         tbody.appendChild(tr);
