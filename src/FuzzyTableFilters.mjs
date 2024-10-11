@@ -9,6 +9,13 @@ import Fuse from './Fuse.mjs'
  * @param {Array} context.filters - Array of filter definitions.
  */
 export default function createFilters(context) {
+
+    if (context.aside) {
+        const asideContainer = document.createElement('aside');
+        asideContainer.innerHTML = context.aside;
+        context.container.appendChild(asideContainer);
+    }
+
     if (context.filters.length > 0) {
         const filterContainer = document.createElement('div');
         filterContainer.className = context.classes.filterContainer;

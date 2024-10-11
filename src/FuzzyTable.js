@@ -32,11 +32,13 @@ export default class FuzzyTable {
         }
 
         this.filteredTable = [];
-        this.size = (options.pageSize ?? this.container?.dataset?.pageSize) ?? 10;
+        this.size = (options.pageSize ?? this.container?.dataset?.pageSize) ?? 100;
         this.currentPage = 0;
-        this.pageSizes = (options.pageSizes ?? this.container?.dataset?.pageSizes) ?? [10, 150, 500, 1000, 5000];
+        this.pageSizes = (options.pageSizes ?? this.container?.dataset?.pageSizes) ?? [50, 100, 250, 1000, 5000];
         this.paginationArrowButtonsDisabled = options?.paginationArrowButtonsDisabled
         this.classes = mergeClasses(options.classes);
+
+        this.aside = (options.aside ?? this.container?.dataset?.aside);
 
         this.checkMark = (options?.checkMark ?? this.container?.dataset?.checkMark) ?? '✓'
         this.xMark = (options?.xMark ?? this.container?.dataset?.xMark) ?? '✗'
