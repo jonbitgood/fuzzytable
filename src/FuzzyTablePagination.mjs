@@ -20,6 +20,12 @@ export default function CreatePagination(context, tableContainer) {
         tablePagination.id = 'paginationContainer';
         tablePagination.appendChild(context.paginationNav);
         tableContainer.appendChild(tablePagination);
+
+        const tablePaginationDescription = document.createElement('div');
+        tablePaginationDescription.id = 'paginationDescription';
+        tablePaginationDescription.className = context.classes.paginationDescription;
+        tablePagination.appendChild(tablePaginationDescription);
+        context.paginationDescription = tablePaginationDescription;
     }
 
     paginationUpdate(context);
@@ -55,6 +61,17 @@ export const paginationUpdate = (context) => {
         fragment.appendChild(forwardArrow);
     }
 
+    const startItem = `
+    <span class="${context.classes.paginationDescriptionStart}">
+        ${context.numberFormatter.format(context.currentPage * context.size + 1)}
+    </span>`;
+    const endItem = `<span class="${context.classes.paginationDescriptionEnd}">
+        ${context.numberFormatter.format(Math.min((context.currentPage + 1) * context.size, context.table.length))}
+    </span>`;
+    const totalItems = `<span class="${context.classes.paginationDescriptionTotal}">
+        ${context.numberFormatter.format(context.table.length)}
+    </span>`
+    context.paginationDescription.innerHTML = `${context.t?.showing ?? ''} ${startItem} ${context.t?.to ?? '-'} ${endItem} ${context.t?.of ?? '/'} ${totalItems} ${context.t?.entries ?? ''}`
     nav.appendChild(fragment);
 };
 
