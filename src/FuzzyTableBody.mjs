@@ -92,6 +92,9 @@ const createImg = (img, value) => {
 }
 
 const formatCellContent = (context, cellValue, type, locale) => {
+    if(cellValue == '' || typeof cellValue == undefined) {
+        return ''
+    }
     if (type === 'int') {
         return new Intl.NumberFormat(locale).format(cellValue);
     }
