@@ -48,6 +48,7 @@ export const createTbody = (context, tbody) => {
                 const a = document.createElement('a')
                 a.className = context.classes.tableCellLink
                 a.href = `${column.link.base ? column.link.base : ''}${row[column.link.id]}`
+                a.target = column.link.target ?? '_self'
                 a.appendChild(content)
                 td.appendChild(a)
             } else {
