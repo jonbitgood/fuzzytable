@@ -1,11 +1,11 @@
 /**
- * Creates a UI component for downloading data in JSON or TSV format.
+ * Creates a UI component for downloading data in JSON, TSV, CSV, or Excel format.
  * This component toggles a table download filetype options dropdown.
  * @param {Object} context - The context object for passed in options
  * @returns {HTMLElement} - The details HTMLElement for the downloads
  */
 export default function createDownloadUI(context) {
-    const types = ['JSON', 'TSV', 'CSV'];
+    const types = ['CSV', 'Excel', 'TSV', 'JSON'];
 
     const details = document.createElement('details');
     details.id = 'fuzzy_download_details';
@@ -37,6 +37,8 @@ export default function createDownloadUI(context) {
 
     details.appendChild(summary);
     details.appendChild(dropdown);
+
+    // Close the dropdown when clicking outside
     document.addEventListener('click', (event) => {
         if (!details.contains(event.target) && details.hasAttribute('open')) {
             details.removeAttribute('open');
@@ -47,19 +49,38 @@ export default function createDownloadUI(context) {
 }
 
 
-
 /**
- * Triggers a download of the table data in JSON, TSV, CSV, or plain text format.
+ * Triggers a download of the table data in JSON, TSV, CSV, or Excel format.
  * This function creates a Blob from the data and uses a temporary download link to initiate the download.
  *
  * @param {Array} data - The array of data objects to be downloaded.
- * @param {string} type - The type of file to generate: "JSON", "TSV", OR "CSV"
+ * @param {string} type - The type of file to generate: "JSON", "TSV", "CSV", or "Excel"
  */
 function downloadData(data, type) {
+
     const convertArrayToSeparatedValues = (data, separator) => {
         const headings = Object.keys(data[0]).join(separator);
-        const rows = data.map(row => Object.values(row).join(separator)).join('\n');
+        const rows = data
+            .map(row => Object.values(row).join(separator))
+            .join('\n');
         return `${headings}\n${rows}`;
+    };
+
+    const convertArrayToTable = (data) => {
+        let table = '<table border="1"><thead><tr>';
+        Object.keys(data[0]).forEach(key => {
+            table += `<th>${key}</th>`;
+        });
+        table += '</tr></thead><tbody>';
+        data.forEach(row => {
+            table += '<tr>';
+            Object.values(row).forEach(value => {
+                table += `<td>${value}</td>`;
+            });
+            table += '</tr>';
+        });
+        table += '</tbody></table>';
+        return table;
     };
 
     let fileType;
@@ -76,6 +97,36 @@ function downloadData(data, type) {
             fileType = 'text/csv';
             fileName = 'data.csv';
             fileContent = convertArrayToSeparatedValues(data, ',');
+            break;
+        case 'Excel':
+            fileType = 'application/vnd.ms-excel';
+            fileName = 'data.xls';
+            const tableHtml = convertArrayToTable(data);
+            fileContent = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:x="urn:schemas-microsoft-com:office:excel"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+    <meta charset="UTF-8">
+    <!--[if gte mso 9]>
+    <xml>
+        <x:ExcelWorkbook>
+            <x:ExcelWorksheets>
+                <x:ExcelWorksheet>
+                    <x:Name>Sheet1</x:Name>
+                    <x:WorksheetOptions>
+                        <x:DisplayGridlines/>
+                    </x:WorksheetOptions>
+                </x:ExcelWorksheet>
+            </x:ExcelWorksheets>
+        </x:ExcelWorkbook>
+    </xml>
+    <![endif]-->
+</head>
+<body>
+    ${tableHtml}
+</body>
+</html>`;
             break;
         default:
             fileType = 'application/json';
