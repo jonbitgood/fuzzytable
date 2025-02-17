@@ -1,13 +1,21 @@
 import { terser } from 'rollup-plugin-terser';
 
+const terserConfig = terser({
+  mangle: {
+      properties: false,
+  },
+  compress: false,
+});
+
 export default {
   input: './src/FuzzyTable.js',
   output: {
     file: 'dist/FuzzyTable.js',
-    format: 'umd',  // UMD format for universal compatibility
-    name: 'FuzzyTable'
+    format: 'es',
+    name: 'FuzzyTable',
+    sourcemap: true
   },
   plugins: [
-    terser()
+    terserConfig,
   ]
 };

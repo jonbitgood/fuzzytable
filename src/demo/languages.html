@@ -11,7 +11,6 @@
         }
     </style>
 </head>
-
 <body>
     <nav class="text-center mt-4 text-white">
         <a class="bg-stone-800 mx-2 px-2 rounded" href="base.html">Base</a>
@@ -19,15 +18,15 @@
         <a class="bg-stone-800 mx-2 px-2 rounded" href="alphabets.html">Alphabets Example</a>
         <a class="bg-stone-800 mx-2 px-2 rounded" href="books.html">Books Example</a>
     </nav>
-    <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
+    <div id="FuzzyTableWrapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
-        import FuzzyTable from '../FuzzyTable.js'
+        import FuzzyTable from '../../dist/FuzzyTable.js'
 
         const head = [
             { id: "name", name: "Title", subtitle: "autonym", link: { basepath: `https://iso639-3.sil.org/code/`, id: 'iso' } },
             { id: "population", name: "Population", type: "int", searchable: false, class: "text-center" },
             { id: "iso", name: "iso" },
-            { id: "location", name: "location", icon: { base: '/demo/flags.svg#', id: 'country_id', class: "h-5 w-5 drop-shadow-md inline-block ml-3" } },
+            { id: "location", name: "location", icon: { base: '/src/demo/flags.svg#', id: 'country_id', class: "h-5 w-5 drop-shadow-md inline-block ml-3" } },
             { id: "status_id", name: "status_id", searchable: false, class: "text-center" },
         ];
 
@@ -46,7 +45,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             fetch('languages.json').then(reply => reply.json())
                 .then(data => {
-                    new FuzzyTable('FuzzyTableWapper', data, head, {
+                    new FuzzyTable('FuzzyTableWrapper', data, head, {
                         filters: customFilters,
                         pageSize: 100
                     });
@@ -54,5 +53,4 @@
         });
     </script>
 </body>
-
 </html>

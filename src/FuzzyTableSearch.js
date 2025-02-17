@@ -1,4 +1,5 @@
-import paginationUpdate from './FuzzyTablePagination.mjs'
+import { elem } from "./FuzzyTableHelper";
+import paginationUpdate from './FuzzyTablePagination.js'
 
 /**
  * Creates a search input element for filtering table data. This search box dynamically filters the table
@@ -8,28 +9,17 @@ import paginationUpdate from './FuzzyTablePagination.mjs'
  * @param {Object} context - The FuzzyTable context
  * @returns {HTMLInputElement} - The created search input element that is configured to filter the table data on input.
  */
+
 export default function createSearchBox(context) {
+    const label = elem('label', { className: context.classes.searchWrapper });
 
-    const label = document.createElement('label');
-    label.className = context.classes.searchWrapper;
-
-    const searchBox = document.createElement('input');
-    searchBox.type = 'search';
-    searchBox.id = 'fuzzy_search';
-    searchBox.placeholder = context.t?.search_placeholder ?? 'Search';
-    searchBox.className = context.classes.searchInput;
-
-    const iconContainer = document.createElement('span');
-    iconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-    </svg>`;
-    iconContainer.className = context.classes.searchIcon;
-
-    label.appendChild(iconContainer);
-    label.appendChild(searchBox);
-
+    const searchBox = elem('input', {
+        type: 'search',
+        id: 'fuzzy_search',
+        placeholder: context.t?.search_placeholder ?? 'Search',
+        className: context.classes.searchInput,
+    });
     searchBox.oninput = () => {
-
         if(context.searchBox.value !== "") {
             context.table = context.fuse.search(context.searchBox.value).slice(0, 100).map(item => item.item)
         } else {
@@ -53,7 +43,17 @@ export default function createSearchBox(context) {
         paginationUpdate(context)
     }
     context.searchBox = searchBox
-    
 
-    return label
+    const iconContainer = elem('span', {
+        className: context.classes.searchIcon,
+        innerHTML: `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>`
+    });
+
+    label.append(iconContainer, searchBox);
+    context.searchBox = searchBox;
+
+    return label;
 }

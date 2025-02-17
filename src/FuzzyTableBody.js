@@ -15,35 +15,28 @@ export const createTbody = (context, tbody) => {
     for (const row of tableSlice) {
         const tr = document.createElement('tr');
         tr.className = context.classes.tr;
-
         for (const column of context.head) {
             const td = document.createElement('td');
             td.className = `${column.class ?? ''} ${column.id} ${context.classes.tableColumn ?? ''}`;
             if(column.type) {
                 td.setAttribute('data-type', column.type);
             }
-            
-
             const cellValue = row[column.id] ?? '';
             const formattedValue = formatCellContent(context, cellValue, column.type, context.locale);
             const content = new DocumentFragment();
             if (column.icon) {
                 content.appendChild(createSVG(column.icon, row[column.icon.id] ?? ''));
             }
-
             if(column.img) {
                 content.appendChild(createImg(column.img, row[column.img.id] ?? ''));
             }
-
             content.appendChild(document.createTextNode(formattedValue));
-
             if(column.subtitle) {
                 const subtitle  = document.createElement('em')
                 subtitle.className = context.classes.tableCellSubtitle;
                 subtitle.innerText = row[column.subtitle] ?? ''
                 content.appendChild(subtitle);
             }
-
             if (column.link) {
                 const a = document.createElement('a')
                 a.className = context.classes.tableCellLink
@@ -54,22 +47,17 @@ export const createTbody = (context, tbody) => {
             } else {
                 td.appendChild(content)
             }
-
             if (column.suffix && cellValue !== '') {
                 td.appendChild(context.safeHtml(column.suffix))
             }
-
             if(column.hideZeros && cellValue === 0) {
                 td.classList.add("hidden");
             }
-
             tr.appendChild(td);
         }
         tbody.appendChild(tr);
     }
 }
-
-
 
 const createSVG = (icon, value) => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

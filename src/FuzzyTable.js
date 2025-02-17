@@ -1,12 +1,12 @@
-import Fuse from './Fuse.mjs'
-import { sort } from './FuzzyTableSort.mjs'
-import { createTbody } from './FuzzyTableBody.mjs'
-import { mergeClasses } from './FuzzyTableStyles.mjs'
-import createFilters from './FuzzyTableFilters.mjs'
-import createSearchBox from './FuzzyTableSearch.mjs'
-import createDownloadUI from './FuzzyTableDownloader.mjs'
-import CreatePagination, {paginationUpdate as pUpdate} from './FuzzyTablePagination.mjs'
-import createSizeSelector from './FuzzyTableSizeSelect.mjs'
+import Fuse from './Fuse.js'
+import { sort } from './FuzzyTableSort.js'
+import { createTbody } from './FuzzyTableBody.js'
+import { mergeClasses } from './FuzzyTableStyles.js'
+import createFilters from './FuzzyTableFilters.js'
+import createSearchBox from './FuzzyTableSearch.js'
+import createDownloadUI from './FuzzyTableDownloader.js'
+import CreatePagination, {paginationUpdate as pUpdate, CreateTopPagination} from './FuzzyTablePagination.js'
+import createSizeSelector from './FuzzyTableSizeSelect.js'
 
 export default class FuzzyTable {
     constructor(containerId, data, head, options) {
@@ -37,12 +37,9 @@ export default class FuzzyTable {
         this.pageSizes = (options.pageSizes ?? this.container?.dataset?.pageSizes) ?? [50, 100, 250, 1000, 5000];
         this.paginationArrowButtonsDisabled = options?.paginationArrowButtonsDisabled
         this.classes = mergeClasses(options.classes);
-
         this.aside = (options.aside ?? this.container?.dataset?.aside);
-
         this.checkMark = (options?.checkMark ?? this.container?.dataset?.checkMark) ?? '✓'
         this.xMark = (options?.xMark ?? this.container?.dataset?.xMark) ?? '✗'
-        
         this.locale = options.locale ?? 'en'
         this.numberFormatter = new Intl.NumberFormat(this.locale);
         this.t = options.t ?? {search_placeholder: 'Search'}
@@ -79,6 +76,7 @@ export default class FuzzyTable {
         tableHeader.className = this.classes.tableHeader
 
         tableHeader.appendChild(createSearchBox(this))
+        tableHeader.appendChild(CreateTopPagination(this))
         tableHeader.appendChild(createDownloadUI(this))
         tableHeader.appendChild(createSizeSelector(this))
 

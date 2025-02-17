@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fuzzy Table Test Page</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&family=Noto+Sans+SC:wght@100..900&display=swap" rel="stylesheet">
     <style>
-        html {
-            background-color: #36312C;
-        }
-
         * {
             font-family: "Noto Sans Arabic", sans-serif;
             font-optical-sizing: auto;
@@ -20,20 +16,10 @@
             font-style: normal;
             font-variation-settings: "wdth" 62.5;
         }
-
-        a {
-            color:#F8BB39;
-        }
-
-        td[data-type="int"] {
-            color:#00A8C6!important;
-        }
-
-        td[data-type="int"] span {
-            color: #95CC5E;
-            font-size:x-small;
-            margin-right:5px;
-        }
+        html                     { background-color: #332; }
+        a                        { color:#FB3; }
+        td[data-type="int"]      { color:#0AC!important; }
+        td[data-type="int"] span { color: #9C5; font-size:x-small; margin-right:5px; }
     </style>
 </head>
 
@@ -46,7 +32,7 @@
     </nav>
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
-        import FuzzyTable from '../FuzzyTable.js'
+        import FuzzyTable from '../../dist/FuzzyTable.js'
         const head = [
             { id: "ln", name: "语言", subtitle: "iso", link: { base: `https://find.bible/en/languages/`, id: 'iso' } },
             { id: "tt", name: "标题", subtitle: "tv", class: "hidden sm:table-cell" },
@@ -54,44 +40,10 @@
             { id: "dt", name: "年份", type: "year", searchable: false, class: "text-right hidden lg:table-cell" },
         ];
 
-        const classesOverride = {
-            pagination: '',
-            sortArrow: '',
-            arrowUp: 'absolute right-2 top-1.5 text-sm',
-            arrowDown: 'absolute right-2 bottom-1.5 text-sm',
-            paginationButtonCurrent: 'text-lg font-bold text-red-500',
-            paginationNav: 'relative z-0 flex mt-4 justify-center rounded-md -space-x-px dark:text-[#f8f8f0]',
-            paginationDescriptionStart: 'text-red-500 text-xs',
-            paginationDescriptionEnd: 'text-red-500 text-xs',
-            paginationDescriptionTotal: 'text-red-500 text-xs',
-            downloadButton: 'relative inline-flex items-center bg-white dark:bg-stone-800 px-2 h-12 dark:text-[#f8f8f0] ring-1 ring-inset ring-stone-400 dark:ring-stone-800 focus:z-10',
-            downloadDropdown: 'absolute left-0 z-50 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-stone-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
-            downloadDropdownButton: 'text-stone-700 dark:text-[#f8f8f0] hover:dark:bg-stone-900 hover:bg-stone-200 w-full block px-4 py-2 text-sm text-left',
-            downloadDropdownInfo: 'text-center text-xs text-stone-700 dark:text-[#f8f8f0] py-2',
-            fieldsetWrap: 'block mt-8 w-full bg-gray-200 dark:bg-stone-700 text-sm font-semibold p-3 text-stone-900 dark:text-[#f8f8f0] border-b border-stone-200 dark:border-stone-500 rounded-t-lg',
-            fieldsetFilterWrap: 'mb-4 dark:bg-stone-900 border border-stone-200 dark:border-stone-950 p-2',
-            fieldset: 'mb-4 dark:bg-stone-900 border border-stone-200 dark:border-stone-950 p-2',
-            filterContainer: 'hidden sm:flex flex-col lg:w-1/5 ltr:mr-4 rtl:ml-4',
-            filterButton: 'text-sm relative px-2 py-1 my-2 w-full flex items-center justify-center cursor-pointer rounded-lg border dark:text-[#f8f8f0] dark:bg-stone-800 border-stone-200 dark:border-stone-500 shadow-sm',
-            filterButtonActive: 'bg-stone-400 dark:bg-stone-950 text-white border-stone-800',
-            tableContainer: 'flex flex-col w-full relative z-10 max-w-7xl mx-auto',
-            tableColumn: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
-            sizeSelect: 'appearance-none w-full h-full bg-white dark:bg-stone-700 dark:text-[#f8f8f0] text-center ring-1 ring-inset ring-stone-400 dark:ring-stone-800 rtl:rounded-tl-lg ltr:rounded-tr-lg',
-            tableHeader: 'flex flex-row mt-8 h-12',
-            tableCellLink: 'text-red-500',
-            table: 'w-full',
-            thead: 'bg-stone-100 dark:bg-stone-700',
-            tbody: 'divide-y divide-stone-200 dark:divide-stone-800 bg-white dark:bg-stone-800 border border-stone-500 dark:border-none',
-            th: 'relative px-1 py-3 rtl:pr-7 ltr:text-left rtl:text-right text-sm font-semibold text-stone-900 dark:text-[#f8f8f0] cursor-pointer',
-            tr: 'dark:even:bg-stone-900',
-            td: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             fetch('books.json').then(reply => reply.json())
                 .then(data => {
                     new FuzzyTable('FuzzyTableWapper', data, head, {
-                        classes: classesOverride,
                         t: {
                             showing: "显示",
                             to: "至",
