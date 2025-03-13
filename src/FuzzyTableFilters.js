@@ -1,5 +1,6 @@
 import Fuse from './Fuse.js'
 import { elem } from './FuzzyTableHelper.js';
+import {createSVG} from './FuzzyTableBody.js'
 
 /**
  * Initializes filter elements based on the provided context and appends them to the context's container.
@@ -9,7 +10,7 @@ import { elem } from './FuzzyTableHelper.js';
  * @param {HTMLElement} context.container - The DOM element to append the filter container.
  * @param {Array} context.filters - Array of filter definitions.
  */
-export default function createFilters(context) {
+export function createFilters(context) {
     if (context.aside) {
       const asideContainer = elem('aside', { innerHTML: context.aside });
       context.container.appendChild(asideContainer);
@@ -41,13 +42,23 @@ export default function createFilters(context) {
  * @param {Function} onClick - The function to execute when the button is clicked.
  * @returns {HTMLElement} The constructed button element.
  */
-function createFilterButton(classes, option, onClick) {
-    return elem('button', {
-      className: `${classes.filterButton} ${option.active ? classes.filterButtonActive : ''}`,
-      textContent: option.title,
-      onclick: onClick
-    });
+function createFilterButton(filter, classes, option, onClick) {
+
+  const filterFragment = document.createDocumentFragment();
+
+  if (filter.icon) {
+    filterFragment.appendChild(createSVG(filter.icon, option.code ?? ''));
   }
+  
+  filterFragment.appendChild(document.createTextNode(option.title ?? ''));
+  const buttonEl = elem('button', {
+    className: `${classes.filterButton} ${option.active ? classes.filterButtonActive : ''}`,
+    onclick: onClick
+  });
+
+    buttonEl.appendChild(filterFragment);
+    return buttonEl;
+}
 
 /**
  * Creates a fieldset containing buttons for each option of a specific filter.
@@ -62,6 +73,7 @@ function createFilterFieldset(filter, filterKey, applyFilters, context) {
     const fieldset = elem('fieldset', { className: context.classes.fieldset });
     filter.options.forEach((option, optionKey) => {
       const button = createFilterButton(
+        filter,
         context.classes,
         option,
         () => applyFilters(context, filterKey, optionKey)
@@ -78,7 +90,7 @@ function createFilterFieldset(filter, filterKey, applyFilters, context) {
  * @param {Number} filterKey - The index of the current filter in the filters array.
  * @param {Number} optionKey - The index of the current option in the filter's options array.
  */
-function applyFilters(c, filterKey, optionKey) {
+export function applyFilters(c, filterKey, optionKey) {
     let tempTable = c.data;
     c.filters[filterKey].options[optionKey].active =
       c.filters[filterKey].options[optionKey].values !== "";
@@ -123,17 +135,28 @@ function applyFilters(c, filterKey, optionKey) {
   
     const filterContainer = document.getElementById("fuzzy_filters");
     c.filters.forEach((filter, filterKey) => {
-      const fieldset = filterContainer.children[filterKey * 2 + 1]; // Accessing the correct fieldset based on index
-      filter.options.forEach((option, optionKey) => {
-        const button = fieldset.children[optionKey];
-        const classList = c.classes.filterButtonActive.split(" ");
-        for (const className of classList) {
-          if (option.active) {
-            button.classList.add(className);
-          } else {
-            button.classList.remove(className);
+
+      const fieldsets = Array.from(filterContainer.querySelectorAll("fieldset")); // Select only fieldset elements
+
+      c.filters.forEach((filter, filterKey) => {
+        const fieldset = fieldsets[filterKey];
+        if (!fieldset) return;
+      
+        filter.options.forEach((option, optionKey) => {
+          const button = fieldset.children[optionKey];
+          if (!button) return;
+
+          const classList = c.classes.filterButtonActive.split(" ");
+          for (const className of classList) {
+            if (option.active) {
+              button.classList.add(className);
+            } else {
+              button.classList.remove(className);
+            }
           }
-        }
+        });
       });
+
+
     });
   }

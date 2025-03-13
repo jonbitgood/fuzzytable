@@ -2,7 +2,7 @@ import Fuse from './Fuse.js'
 import { sort } from './FuzzyTableSort.js'
 import { createTbody } from './FuzzyTableBody.js'
 import { mergeClasses } from './FuzzyTableStyles.js'
-import createFilters from './FuzzyTableFilters.js'
+import {createFilters, applyFilters} from './FuzzyTableFilters.js'
 import createSearchBox from './FuzzyTableSearch.js'
 import createDownloadUI from './FuzzyTableDownloader.js'
 import CreatePagination, {paginationUpdate as pUpdate, CreateTopPagination} from './FuzzyTablePagination.js'
@@ -47,9 +47,9 @@ export default class FuzzyTable {
         this.fuse = new Fuse(this.table, {
             shouldSort: true,
             includeMatches: true,
-            threshold: 0.3,
+            threshold: 0.15,
             location: 0,
-            distance: 50,
+            distance: 120,
             maxPatternLength: 12,
             minMatchCharLength: 1,
             useExtendedSearch: true,
@@ -137,6 +137,13 @@ export default class FuzzyTable {
         tableContainer.appendChild(table);
         CreatePagination(this, tableContainer)
         this.container.append(tableContainer);
+        this.filters.forEach((filter, filterKey) => {
+            filter.options.forEach((option, optionKey) => {
+                if (option.active) {
+                    applyFilters(this, filterKey, optionKey);
+                }
+            });
+        });
     }
 
     safeHtml = (html) => {

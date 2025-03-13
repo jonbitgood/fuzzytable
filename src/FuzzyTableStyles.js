@@ -23,7 +23,7 @@ const defaultClasses = {
     fieldsetFilterWrap: 'mb-4 dark:bg-stone-900 border border-stone-200 dark:border-stone-950 p-2',
     fieldset: 'mb-4 dark:bg-stone-900 border border-stone-200 dark:border-stone-950 p-2',
     filterContainer: 'hidden sm:flex flex-col lg:w-1/5 ltr:mr-4 rtl:ml-4',
-    filterButton: 'text-sm relative px-2 py-1 my-2 w-full flex items-center justify-center cursor-pointer rounded-lg border dark:text-[#f8f8f0] dark:bg-stone-800 border-stone-200 dark:border-stone-500 shadow-sm',
+    filterButton: 'text-sm relative px-2 py-1 my-2 w-full flex flex-row justify-center cursor-pointer rounded-lg border dark:text-[#f8f8f0] dark:bg-stone-800 border-stone-200 dark:border-stone-500 shadow-sm',
     filterButtonActive: 'bg-stone-400 dark:bg-stone-950 text-white border-stone-800',
     tableContainer: 'flex flex-col w-full relative z-10 max-w-7xl mx-auto',
     tableColumn: 'whitespace-nowrap px-3 py-2 text-sm text-stone-800 dark:text-[#f8f8f0] border border-stone-200 dark:border-stone-800 relative truncate max-w-[240px]',
