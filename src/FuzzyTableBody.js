@@ -12,9 +12,19 @@ export const createTbody = (context, tbody) => {
     const tableSlice = context.table.slice(start, end);
 
     tbody.innerHTML = '';
+    let rowIndex = start + 1;
+    
     for (const row of tableSlice) {
         const tr = document.createElement('tr');
         tr.className = context.classes.tr;
+
+        if (context.numberCol) {
+            const numTd = document.createElement('td');
+            numTd.className = `${context.classes.tableColumn ?? ''} number-column`;
+            numTd.textContent = rowIndex++;
+            tr.appendChild(numTd);
+        }
+
         for (const column of context.head) {
             const td = document.createElement('td');
             td.className = `${column.class ?? ''} ${column.id} ${context.classes.tableColumn ?? ''}`;

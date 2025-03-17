@@ -47,6 +47,7 @@
                 .then(data => {
                     new FuzzyTable('FuzzyTableWrapper', data, head, {
                         filters: customFilters,
+                        numberCol: true,
                         pageSize: 100
                     });
                 })

@@ -34,6 +34,7 @@ export default class FuzzyTable {
         this.filteredTable = [];
         this.size = (options.pageSize ?? this.container?.dataset?.pageSize) ?? 100;
         this.currentPage = 0;
+        this.numberCol = options.numberCol ?? false;
         this.pageSizes = (options.pageSizes ?? this.container?.dataset?.pageSizes) ?? [50, 100, 250, 1000, 5000];
         this.paginationArrowButtonsDisabled = options?.paginationArrowButtonsDisabled
         this.classes = mergeClasses(options.classes);
@@ -86,6 +87,13 @@ export default class FuzzyTable {
         const thead = document.createElement('thead');
         if(this.classes.thead) {
             thead.className = this.classes.thead;
+        }
+
+        if (this.numberCol) {
+            const numTh = document.createElement('th');
+            numTh.className = `${this.classes.th ?? ''} number-column`;
+            numTh.textContent = '#'; // Column header for numbering
+            thead.appendChild(numTh);
         }
 
         for (const column of this.head) {
