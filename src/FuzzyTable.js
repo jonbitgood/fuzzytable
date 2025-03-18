@@ -99,7 +99,7 @@ export default class FuzzyTable {
         for (const column of this.head) {
             const th = document.createElement('th');
             th.className = `${this.classes.th ?? ''} ${column.class ?? ''}`;
-            th.textContent = column.name;
+            th.innerHTML = column.name;
             const arrowUp = document.createElement('span');
             const arrowDown = document.createElement('span');
             arrowUp.className = this.classes.arrowUp;
