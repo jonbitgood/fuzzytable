@@ -91,72 +91,68 @@ function createFilterFieldset(filter, filterKey, applyFilters, context) {
  * @param {Number} optionKey - The index of the current option in the filter's options array.
  */
 export function applyFilters(c, filterKey, optionKey) {
-    let tempTable = c.data;
-    c.filters[filterKey].options[optionKey].active =
-      c.filters[filterKey].options[optionKey].values !== "";
-    if (c.filters[filterKey].filterType === "radio") {
-      c.filters[filterKey].options.forEach((option, i) => {
-        if (i !== optionKey) {
-          c.filters[filterKey].options[i].active = false;
-        }
-      });
-    }
-  
-    c.filters[filterKey].options[optionKey].active = true;
-    for (const filter of c.filters) {
-      for (const option of filter.options.filter(option => option.active)) {
-        console.log(option);
-        tempTable = tempTable.filter((row) => {
-          const match = option.value.test(row[filter.filterColumn]);
-          option.active = true;
-          return option.inverse ? !match : match;
-        });
+  let tempTable = c.data;
+
+  c.filters[filterKey].options[optionKey].active = c.filters[filterKey].options[optionKey].values !== "";
+
+  if (c.filters[filterKey].filterType === "radio") {
+    c.filters[filterKey].options.forEach((option, i) => {
+      if (i !== optionKey) {
+        option.active = false;
       }
-    }
-  
-    c.currentPage = 0;
-    c.table = tempTable;
-    c.updateTable();
-  
-    c.fuse = new Fuse(c.table, {
-      shouldSort: true,
-      includeMatches: true,
-      threshold: 0.3,
-      location: 0,
-      distance: 50,
-      maxPatternLength: 12,
-      minMatchCharLength: 1,
-      keys: c.head
-        .filter(column => column.searchable !== false)
-        .map(column => column.id)
-    });
-  
-    c.paginationUpdate(c);
-  
-    const filterContainer = document.getElementById("fuzzy_filters");
-    c.filters.forEach((filter, filterKey) => {
-
-      const fieldsets = Array.from(filterContainer.querySelectorAll("fieldset")); // Select only fieldset elements
-
-      c.filters.forEach((filter, filterKey) => {
-        const fieldset = fieldsets[filterKey];
-        if (!fieldset) return;
-      
-        filter.options.forEach((option, optionKey) => {
-          const button = fieldset.children[optionKey];
-          if (!button) return;
-
-          const classList = c.classes.filterButtonActive.split(" ");
-          for (const className of classList) {
-            if (option.active) {
-              button.classList.add(className);
-            } else {
-              button.classList.remove(className);
-            }
-          }
-        });
-      });
-
-
     });
   }
+
+  for (const filter of c.filters) {
+    const activeOptions = filter.options.filter((opt) => opt.active);
+    for (const option of activeOptions) {
+      tempTable = tempTable.filter((row) => {
+        const match = option.value.test(row[filter.filterColumn]);
+        return option.inverse ? !match : match;
+      });
+    }
+  }
+
+  c.currentPage = 0;
+  c.table = tempTable;
+  c.updateTable();
+
+  c.fuse = new Fuse(c.table, {
+    shouldSort: true,
+    includeMatches: true,
+    threshold: 0.3,
+    location: 0,
+    distance: 50,
+    maxPatternLength: 12,
+    minMatchCharLength: 1,
+    keys: c.head
+      .filter((column) => column.searchable !== false)
+      .map((column) => column.id),
+  });
+
+  c.paginationUpdate(c);
+
+  const filterContainer = document.getElementById("fuzzy_filters");
+  if (!filterContainer) return;
+
+  const fieldsets = Array.from(filterContainer.querySelectorAll("fieldset"));
+  const activeClasses = c.classes.filterButtonActive.split(" ");
+
+  c.filters.forEach((filter, fIndex) => {
+    const fieldset = fieldsets[fIndex];
+    if (!fieldset) return;
+
+    filter.options.forEach((option, oIndex) => {
+      const button = fieldset.children[oIndex];
+      if (!button) return;
+
+      activeClasses.forEach((className) => {
+        if (option.active) {
+          button.classList.add(className);
+        } else {
+          button.classList.remove(className);
+        }
+      });
+    });
+  });
+}
