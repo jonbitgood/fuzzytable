@@ -49,7 +49,7 @@ export function CreateTopPagination(context) {
       fragment.appendChild(createArrowElement(context, "back", "top"));
     }
     const currentDisplay = elem("span", {
-      textContent: `${context.numberFormatter.format(context.currentPage + 1)}/${context.numberFormatter.format(totalPages)}`,
+      innerHTML: `${context.numberFormatter.format(context.currentPage + 1)} <span class="${context.classes.paginationTopSlash}">${context.t?.of ?? '/'}</span> ${context.numberFormatter.format(totalPages)}`,
       className: context.classes.topPaginationCurrent || ""
     });
     fragment.appendChild(currentDisplay);
