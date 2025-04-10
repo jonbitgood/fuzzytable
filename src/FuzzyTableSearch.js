@@ -20,28 +20,43 @@ export default function createSearchBox(context) {
         className: context.classes.searchInput,
     });
     searchBox.oninput = () => {
-        if(context.searchBox.value !== "") {
-            context.table = context.fuse.search(context.searchBox.value).slice(0, 100).map(item => item.item)
+        const searchTerm = context.searchBox.value.trim().toLowerCase();
+    
+        if (searchTerm !== "") {
+            const fuseResults = context.fuse.search(searchTerm).slice(0, 100).map(item => item.item);
+            const substringMatches = context.data.filter(row =>
+                Object.values(row).some(value =>
+                    typeof value === 'string' && value.toLowerCase().includes(searchTerm)
+                )
+            );
+    
+            const uniqueResults = [
+                ...fuseResults,
+                ...substringMatches.filter(row => !fuseResults.includes(row))
+            ];
+    
+            context.table = uniqueResults;
         } else {
             let tempTable = context.data;
-
+    
             for (const filter of context.filters) {
                 for (const option of filter.options.filter(option => option.active)) {
                     tempTable = tempTable.filter((row) => {
                         const match = option.value.test(row[filter.filterColumn]);
                         option.active = true;
-                        return (option.inverse) ? !match : match}
-                    );
+                        return option.inverse ? !match : match;
+                    });
                 }
             }
-
-            context.table = tempTable
+    
+            context.table = tempTable;
         }
-
+    
         context.currentPage = 0;
         context.updateTable();
-        paginationUpdate(context)
-    }
+        paginationUpdate(context);
+    };
+    
     context.searchBox = searchBox
 
     const iconContainer = elem('span', {

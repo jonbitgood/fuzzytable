@@ -136,7 +136,7 @@ export function applyFilters(c, filterKey, optionKey) {
   if (!filterContainer) return;
 
   const fieldsets = Array.from(filterContainer.querySelectorAll("fieldset"));
-  const activeClasses = c.classes.filterButtonActive.split(" ");
+  const activeClasses = c.classes.filterButtonActive.trim().replace(/\s+/g, " ").split(" ");
 
   c.filters.forEach((filter, fIndex) => {
     const fieldset = fieldsets[fIndex];

@@ -1,6 +1,6 @@
 {
   "name": "fuzzytable",
-  "version": "0.1.98",
+  "version": "0.1.99",
   "description": "A JavaScript module to render and manage a dynamic data table with sorting, filtering, and pagination.",
   "main": "./dist/FuzzyTable.js",
   "scripts": {

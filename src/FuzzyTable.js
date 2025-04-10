@@ -106,8 +106,8 @@ export default class FuzzyTable {
             arrowDown.className = this.classes.arrowDown;
             arrowUp.textContent = '▲';
             arrowDown.textContent = '▼';
-            arrowUp.style.opacity = 0.35;
-            arrowDown.style.opacity = 0.35;
+            arrowUp.style.opacity = (column.sortDir == "ascending") ? 1 : 0.35;
+            arrowDown.style.opacity = (column.sortDir == "descending") ? 1 : 0.35;
         
             th.appendChild(arrowUp);
             th.appendChild(arrowDown);
