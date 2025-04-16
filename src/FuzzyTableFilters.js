@@ -1,6 +1,7 @@
-import Fuse from './Fuse.js'
 import { elem } from './FuzzyTableHelper.js';
+
 import {createSVG} from './FuzzyTableBody.js'
+import { filterAwareSearch } from './FuzzyTableSearch.js';
 
 /**
  * Initializes filter elements based on the provided context and appends them to the context's container.
@@ -91,10 +92,11 @@ function createFilterFieldset(filter, filterKey, applyFilters, context) {
  * @param {Number} optionKey - The index of the current option in the filter's options array.
  */
 export function applyFilters(c, filterKey, optionKey) {
-  let tempTable = c.data;
+  // Mark the selected filter option as active if it has a value
+  c.filters[filterKey].options[optionKey].active =
+    c.filters[filterKey].options[optionKey].values !== "";
 
-  c.filters[filterKey].options[optionKey].active = c.filters[filterKey].options[optionKey].values !== "";
-
+  // If it's a radio filter, deactivate all other options in that group
   if (c.filters[filterKey].filterType === "radio") {
     c.filters[filterKey].options.forEach((option, i) => {
       if (i !== optionKey) {
@@ -103,35 +105,10 @@ export function applyFilters(c, filterKey, optionKey) {
     });
   }
 
-  for (const filter of c.filters) {
-    const activeOptions = filter.options.filter((opt) => opt.active);
-    for (const option of activeOptions) {
-      tempTable = tempTable.filter((row) => {
-        const match = option.value.test(row[filter.filterColumn]);
-        return option.inverse ? !match : match;
-      });
-    }
-  }
+  // Delegate table update to filterAwareSearch (which handles both filters + fuzzy search)
+  filterAwareSearch(c);
 
-  c.currentPage = 0;
-  c.table = tempTable;
-  c.updateTable();
-
-  c.fuse = new Fuse(c.table, {
-    shouldSort: true,
-    includeMatches: true,
-    threshold: 0.3,
-    location: 0,
-    distance: 50,
-    maxPatternLength: 12,
-    minMatchCharLength: 1,
-    keys: c.head
-      .filter((column) => column.searchable !== false)
-      .map((column) => column.id),
-  });
-
-  c.paginationUpdate(c);
-
+  // Update UI to reflect active filters
   const filterContainer = document.getElementById("fuzzy_filters");
   if (!filterContainer) return;
 
@@ -156,3 +133,4 @@ export function applyFilters(c, filterKey, optionKey) {
     });
   });
 }
+

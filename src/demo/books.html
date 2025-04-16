@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fuzzy Table Test Page</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="../styles/fuzzytable.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&family=Noto+Sans+SC:wght@100..900&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
     </nav>
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
-        import FuzzyTable from '../../dist/FuzzyTable.js'
+        import FuzzyTable from '/dist/FuzzyTable.min.js'
         const head = [
             { id: "ln", name: "语言", subtitle: "iso", link: { base: `https://find.bible/en/languages/`, id: 'iso' } },
             { id: "tt", name: "标题", subtitle: "tv", class: "hidden sm:table-cell" },

@@ -111,4 +111,4 @@ const formatCellContent = (context, cellValue, type, locale) => {
     }
 
     return cellValue;
-};
+}

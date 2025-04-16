@@ -14,16 +14,12 @@ export default function createSizeSelector(context) {
   
     const label = elem('label', { htmlFor: 'fuzzy_size_select', className: 'sr-only', textContent: 'Select Page Size'});
     sizeSelectContainer.appendChild(label);
-  
     const select = elem('select', {id: 'fuzzy_size_select',className: context.classes.sizeSelect || ''});
     sizeSelectContainer.appendChild(select);
   
     const numberFormatter = new Intl.NumberFormat(context.locale);
     for (const pageSize of context.pageSizes) {
-      const option = elem('option', {
-        value: pageSize,
-        textContent: numberFormatter.format(pageSize)
-      });
+      const option = elem('option', {value: pageSize, textContent: numberFormatter.format(pageSize)});
       if (pageSize === context.size) {
         option.selected = true;
       }

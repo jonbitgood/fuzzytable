@@ -37,10 +37,10 @@ html                          {background-color: #36312C}
 .FuzzyTable                   {width: 100%}
 .FuzzyThead                   {background-color: #F3F4F6} /* bg-gray-100 dark:bg-gray-700 */
 .FuzzyTbody                   {border-width: 1px; border-color: #6B7280; border-top-width: 1px; border-color: #E5E7EB; background-color: #ffffff; } 
-.FuzzyTh                      {background-color: #25211e; position: relative; padding-left: 0.25rem;padding-right: 0.25rem; padding-top: 0.75rem;padding-bottom: 0.75rem; font-size: 0.875rem;line-height: 1.25rem; font-weight: 600; color: #F3F4F6; cursor: pointer}
+.FuzzyTh                      {background-color: #222; position: relative; padding-left: 0.25rem;padding-right: 0.25rem; padding-top: 0.75rem;padding-bottom: 0.75rem; font-size: 0.875rem;line-height: 1.25rem; font-weight: 600; color: #F3F4F6; cursor: pointer}
 .FuzzyTd                      {position: relative; padding-top: 0.5rem;padding-bottom: 0.5rem; padding-left: 0.75rem;padding-right: 0.75rem; border-width: 1px; border-color: #E5E7EB; font-size: 0.875rem;line-height: 1.25rem;color: #1F2937; overflow: hidden;text-overflow: ellipsis;white-space: nowrap; white-space: nowrap; max-width: 240px}
-.dark .FuzzyTbody             {border-style: none; border-color: #1F2937; background-color: #312c28}
-.dark table tr:nth-child(even){background-color: #2b2723}
+.dark .FuzzyTbody             {border-style: none; border-color: #222; background-color: #312c28}
+.dark table tr:nth-child(even){background-color:#222}
 .dark table tr a              {}
 .sr-only {visibility: hidden;display: none}
 
@@ -63,12 +63,12 @@ html                          {background-color: #36312C}
 
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
-        import FuzzyTable from '../../dist/FuzzyTable.js'
+        import FuzzyTable from '/dist/FuzzyTable.min.js'
         const head = [
-            { id: "script", name: "Script", subtitle: "iso", link: { base: `https://find.bible/en/languages/`, id: 'iso' } },
-            { id: "name", name: "Name" },
-            { id: "family", name: "Family", link: { base: `https://find.bible/en/countries/`, id: 'id' }, searchable: false, class: "text-center hidden lg:table-cell" },
-            { id: "diacritics", name: "Diacritics", type:"bool", searchable: false, class: "text-right hidden lg:table-cell" },
+            { id: "ln", name: "语言", subtitle: "iso", link: { base: `https://find.bible/en/languages/`, id: 'iso' } },
+            { id: "tt", name: "标题", subtitle: "tv", class: "hidden sm:table-cell" },
+            { id: "cn", name: "国家", link: { base: `https://find.bible/en/countries/`, id: 'id' }, searchable: false, class: "text-center hidden lg:table-cell", icon: { base: '/demo/flags.svg#', id: 'ci', class: "h-5 w-5 float-left drop-shadow-md inline-block ml-3" } },
+            { id: "dt", name: "年份", type: "year", searchable: false, class: "text-right hidden lg:table-cell" },
         ];
         const classesOverride = {
             pagination: 'FuzzyPagination',

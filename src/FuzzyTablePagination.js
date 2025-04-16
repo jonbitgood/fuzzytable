@@ -67,8 +67,26 @@ export function CreateTopPagination(context) {
 export const paginationUpdate = (context) => {
     const nav = context.paginationNav;
     const totalPages = Math.ceil(context.table.length / context.size);
-    context.displayPages = calculateDisplayPages(context.currentPage, totalPages, 4);
     nav.innerHTML = '';
+    context.paginationDescription.innerHTML = '';
+
+    topPaginationUpdate(context);
+    const { paginationDescriptionStart, paginationDescriptionEnd, paginationDescriptionTotal } = context.classes;
+    context.paginationDescription.innerHTML = `
+        ${context.t?.showing ?? ''} 
+        <span class="${paginationDescriptionStart}">${context.numberFormatter.format(context.currentPage * context.size + 1)}</span>
+        ${context.t?.to ?? '-'}
+        <span class="${paginationDescriptionEnd}">${context.numberFormatter.format(Math.min((context.currentPage + 1) * context.size, context.table.length))}</span>
+        ${context.t?.of ?? '/'}
+        <span class="${paginationDescriptionTotal}">${context.numberFormatter.format(context.table.length)}</span>
+        ${context.t?.entries ?? ''}
+    `;
+
+    if (totalPages <= 1) {
+        return;
+    }
+
+    context.displayPages = calculateDisplayPages(context.currentPage, totalPages, 4);
 
     const fragment = document.createDocumentFragment();
 
@@ -84,20 +102,11 @@ export const paginationUpdate = (context) => {
         fragment.appendChild(createArrowElement(context, 'forward'));
     }
 
-    const { paginationDescriptionStart, paginationDescriptionEnd, paginationDescriptionTotal } = context.classes;
 
-    context.paginationDescription.innerHTML = `
-        ${context.t?.showing ?? ''} 
-        <span class="${paginationDescriptionStart}">${context.numberFormatter.format(context.currentPage * context.size + 1)}</span>
-        ${context.t?.to ?? '-'}
-        <span class="${paginationDescriptionEnd}">${context.numberFormatter.format(Math.min((context.currentPage + 1) * context.size, context.table.length))}</span>
-        ${context.t?.of ?? '/'}
-        <span class="${paginationDescriptionTotal}">${context.numberFormatter.format(context.table.length)}</span>
-        ${context.t?.entries ?? ''}
-    `;
-    topPaginationUpdate(context)
+
     nav.appendChild(fragment);
 };
+
 
 /**
  * Creates an arrow element (back or forward) for pagination navigation.

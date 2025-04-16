@@ -1,4 +1,3 @@
-import Fuse from './Fuse.js'
 import { sort } from './FuzzyTableSort.js'
 import { createTbody } from './FuzzyTableBody.js'
 import { mergeClasses } from './FuzzyTableStyles.js'
@@ -45,17 +44,6 @@ export default class FuzzyTable {
         this.numberFormatter = new Intl.NumberFormat(this.locale);
         this.t = options.t ?? {search_placeholder: 'Search'}
         this.vernacularNumerals = options.vernacularNumerals ?? true;
-        this.fuse = new Fuse(this.table, {
-            shouldSort: true,
-            includeMatches: true,
-            threshold: 0.15,
-            location: 0,
-            distance: 120,
-            maxPatternLength: 12,
-            minMatchCharLength: 1,
-            useExtendedSearch: true,
-            keys: this.head.filter(column => column.searchable !== false).map(column => column.id)
-        })
         this.render();
     }
 

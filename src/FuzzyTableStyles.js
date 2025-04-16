@@ -35,6 +35,7 @@ const defaultClasses = {
     sizeSelect: 'appearance-none w-full h-full bg-white dark:bg-stone-700 dark:text-[#f8f8f0] text-center rtl:rounded-tl-lg ltr:rounded-tr-lg',
     tableHeader: 'flex flex-row mt-8 mb-0.5 h-12',
     tableCellLink: 'text-[#F8BB39]',
+    tableCellSubtitle: 'block text-[#f8f8f0]',
     table: 'w-full',
     thead: 'bg-stone-100 dark:bg-stone-700',
     tbody: 'divide-y divide-stone-200 dark:divide-stone-800 bg-white dark:bg-stone-800 border border-stone-500 dark:border-none',

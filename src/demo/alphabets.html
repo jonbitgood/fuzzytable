@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fuzzy Table Test Page</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../styles/fuzzytable.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&family=Noto+Sans+SC:wght@100..900&display=swap" rel="stylesheet">
@@ -42,13 +42,13 @@
         <a class="bg-stone-800 mx-2 px-2 rounded" href="languages.html">Languages Example</a>
         <a class="bg-stone-800 mx-2 px-2 rounded" href="alphabets.html">Alphabets Example</a>
         <a class="bg-stone-800 mx-2 px-2 rounded" href="books.html">Books Example</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="tailless.html">tail-less Example</a>
     </nav>
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
-        import FuzzyTable from '../../dist/FuzzyTable.js'
+        import FuzzyTable from '/dist/FuzzyTable.min.js'
         const head = [
-            { id: "script", name: "Script", subtitle: "iso", sortDir: "ascending", link: { base: `https://find.bible/en/languages/`, id: 'iso' } },
-            { id: "name", name: "Name" },
+            { id: "name", name: "Script", subtitle: "script", sortDir: "ascending", link: { base: `https://find.bible/en/alphabets/`, id: 'script' } },
             { id: "family", name: "Family", link: { base: `https://find.bible/en/countries/`, id: 'id' }, searchable: false, class: "text-center hidden lg:table-cell" },
             { id: "diacritics", name: "Diacritics", type:"bool", searchable: false, class: "text-right hidden lg:table-cell" },
         ];

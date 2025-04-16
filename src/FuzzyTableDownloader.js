@@ -56,27 +56,8 @@ function downloadData(data, type) {
 
     const convertArrayToSeparatedValues = (data, separator) => {
         const headings = Object.keys(data[0]).join(separator);
-        const rows = data
-            .map(row => Object.values(row).join(separator))
-            .join('\n');
+        const rows = data.map(row => Object.values(row).join(separator)).join('\n');
         return `${headings}\n${rows}`;
-    };
-
-    const convertArrayToTable = (data) => {
-        let table = '<table border="1"><thead><tr>';
-        Object.keys(data[0]).forEach(key => {
-            table += `<th>${key}</th>`;
-        });
-        table += '</tr></thead><tbody>';
-        data.forEach(row => {
-            table += '<tr>';
-            Object.values(row).forEach(value => {
-                table += `<td>${value}</td>`;
-            });
-            table += '</tr>';
-        });
-        table += '</tbody></table>';
-        return table;
     };
 
     let fileType;
@@ -97,32 +78,7 @@ function downloadData(data, type) {
         case 'Excel':
             fileType = 'application/vnd.ms-excel';
             fileName = 'data.xls';
-            const tableHtml = convertArrayToTable(data);
-            fileContent = `
-<html xmlns:o="urn:schemas-microsoft-com:office:office"
-      xmlns:x="urn:schemas-microsoft-com:office:excel"
-      xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-    <meta charset="UTF-8">
-    <!--[if gte mso 9]>
-    <xml>
-        <x:ExcelWorkbook>
-            <x:ExcelWorksheets>
-                <x:ExcelWorksheet>
-                    <x:Name>Sheet1</x:Name>
-                    <x:WorksheetOptions>
-                        <x:DisplayGridlines/>
-                    </x:WorksheetOptions>
-                </x:ExcelWorksheet>
-            </x:ExcelWorksheets>
-        </x:ExcelWorkbook>
-    </xml>
-    <![endif]-->
-</head>
-<body>
-    ${tableHtml}
-</body>
-</html>`;
+            fileContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Sheet1</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table><thead><tr>${Object.keys(data[0]).map(k=>`<th>${k}</th>`).join``}</tr></thead><tbody>${data.map(r=>`<tr>${Object.values(r).map(v=>`<td>${v}</td>`).join``}</tr>`).join``}</tbody></table></body></html>`;
             break;
         default:
             fileType = 'application/json';

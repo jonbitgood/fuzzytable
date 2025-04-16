@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fuzzy Table Test Page</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../styles/fuzzytable.css" rel="stylesheet" />
     <style>
         html {
             background-color: #292524;
+        }
+        td em {
+            display: block;
+            color:#e2e2e2;
         }
     </style>
 </head>
@@ -20,7 +24,7 @@
     </nav>
     <div id="FuzzyTableWrapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
-        import FuzzyTable from '../../dist/FuzzyTable.js'
+        import FuzzyTable from '/dist/FuzzyTable.min.js'
 
         const head = [
             { id: "name", name: "Title", subtitle: "autonym", link: { basepath: `https://iso639-3.sil.org/code/`, id: 'iso' } },
