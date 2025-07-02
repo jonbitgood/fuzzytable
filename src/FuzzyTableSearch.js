@@ -9,7 +9,6 @@ import paginationUpdate from './FuzzyTablePagination.js';
  */
 export default function createSearchBox(context) {
     const label = elem('label', { className: context.classes.searchWrapper });
-
     const searchBox = elem('input', {
         type: 'search',
         id: 'fuzzy_search',
@@ -18,12 +17,8 @@ export default function createSearchBox(context) {
     });
 
     // Define similarity thresholds
-
-    
     searchBox.oninput = () => filterAwareSearch(context);
-    
     context.searchBox = searchBox;
-
     const iconContainer = elem('span', {
         className: context.classes.searchIcon,
         innerHTML: `
