@@ -43,12 +43,13 @@
         <a class="bg-stone-800 mx-2 px-2 rounded" href="alphabets.html">Alphabets Example</a>
         <a class="bg-stone-800 mx-2 px-2 rounded" href="books.html">Books Example</a>
         <a class="bg-stone-800 mx-2 px-2 rounded" href="tailless.html">tail-less Example</a>
+        <a class="bg-cyan-700 mx-2 px-2 rounded" href="alphabets-svelte.html">Svelte 5 Demo</a>
     </nav>
     <div id="FuzzyTableWapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
         import FuzzyTable from '/dist/FuzzyTable.min.js'
         const head = [
-            { id: "name", name: "Script", subtitle: "script", sortDir: "ascending", link: { base: `https://find.bible/en/alphabets/`, id: 'script' } },
+            { id: "name", name: "<b>Script</b><div class='text-red-600'>hi</div>", subtitle: "script", sortDir: "ascending", link: { base: `https://find.bible/en/alphabets/`, id: 'script' } },
             { id: "family", name: "Family", link: { base: `https://find.bible/en/countries/`, id: 'id' }, searchable: false, class: "text-center hidden lg:table-cell" },
             { id: "diacritics", name: "Diacritics", type:"bool", searchable: false, class: "text-right hidden lg:table-cell" },
         ];

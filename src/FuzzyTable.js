@@ -48,11 +48,12 @@ export default class FuzzyTable {
     }
 
     setData(newData) {
-        this.update(() => {
-            this.data = newData;
-            this.table = newData;
-            this.filteredTable = newData.filter(() => true);
-        });
+        this.data = newData;
+        this.table = newData;
+        this.filteredTable = newData.filter(() => true);
+        this.currentPage = 0;
+        this.updateTable();
+        this.paginationUpdate();
     }
 
     render = () => {

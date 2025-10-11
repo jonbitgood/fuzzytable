@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuzzyTable Svelte 5 Demo - Alphabets</title>
+    <link href="../styles/fuzzytable.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&family=Noto+Sans+SC:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        html {
+            background-color: #36312C;
+        }
+
+        * {
+            font-family: "Noto Sans Arabic", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+            font-variation-settings: "wdth" 62.5;
+        }
+
+        a {
+            color:#F8BB39;
+        }
+
+        td[data-type="int"] {
+            color:#00A8C6!important;
+        }
+
+        td[data-type="bool"] span {
+            color: #95CC5E;
+            font-size:x-small;
+            margin-right:5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="text-center mt-4 text-white">
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="base.html">Base</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="languages.html">Languages Example</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="alphabets.html">Alphabets Example</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="books.html">Books Example</a>
+        <a class="bg-stone-800 mx-2 px-2 rounded" href="tailless.html">tail-less Example</a>
+        <a class="bg-cyan-700 mx-2 px-2 rounded" href="alphabets-svelte.html">Svelte 5 Demo</a>
+    </nav>
+
+    <div id="app"></div>
+
+    <script type="module">
+        import { mount } from 'svelte';
+        import SvelteDemoApp from './SvelteDemoApp.svelte';
+
+        mount(SvelteDemoApp, {
+            target: document.getElementById('app')
+        });
+    </script>
+</body>
+</html>

@@ -1,19 +1,94 @@
 # FuzzyTable
 
-A headless compatible data-table with tailwind defaults built with vanilla javascript and fuzzy search powered by fuse.js 
+A headless compatible data-table with tailwind defaults built with vanilla javascript and fuzzy search powered by fuse.js. Now available as both a vanilla JS library and a Svelte 5 component.
 
 ## Quick Start
 
 ### CDN
 
-```
+```html
 <script src="https://cdn.jsdelivr.net/npm/fuzzytable@latest/dist/FuzzyTable.js"></script>
 ```
 
 ### Install with NPM
 
-```
+```bash
 npm i fuzzytable
+```
+
+### Usage
+
+#### Vanilla JavaScript
+
+```javascript
+import FuzzyTable from 'fuzzytable';
+import 'fuzzytable/style.css';
+
+const data = [...];
+const head = [...];
+const options = {...};
+
+new FuzzyTable('container-id', data, head, options);
+```
+
+#### Svelte 5
+
+```svelte
+<script>
+  import FuzzyTable from 'fuzzytable/svelte';
+  import 'fuzzytable/svelte/style.css';
+
+  let data = $state([...]);
+  let head = [...];
+  let options = {...};
+</script>
+
+<FuzzyTable {data} {head} {options} />
+```
+
+### Svelte Component Features
+
+#### Props
+- `data` - Array of data objects (bindable with `bind:data`)
+- `head` - Array of column definitions (bindable with `bind:head`)
+- `options` - Configuration object (see Options section below)
+- `containerId` - Optional custom ID for the container element (default: 'fuzzy-table-container')
+
+#### Methods
+The component exposes methods that you can call using bind:this:
+
+```svelte
+<script>
+  let tableComponent;
+
+  function updateData() {
+    tableComponent.setData(newData);
+  }
+
+  function getTable() {
+    const instance = tableComponent.getInstance();
+    // Access the underlying FuzzyTable instance
+  }
+</script>
+
+<FuzzyTable bind:this={tableComponent} {data} {head} {options} />
+```
+
+#### Reactive Updates
+The Svelte component automatically responds to changes in the `data` prop:
+
+```svelte
+<script>
+  let data = $state([
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bob' }
+  ]);
+
+  function addUser() {
+    data = [...data, { id: data.length + 1, name: 'New User' }];
+    // Table updates automatically!
+  }
+</script>
 ```
 
 ## Configure

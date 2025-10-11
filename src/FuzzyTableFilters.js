@@ -1,5 +1,4 @@
 import { elem } from './FuzzyTableHelper.js';
-
 import {createSVG} from './FuzzyTableBody.js'
 import { filterAwareSearch } from './FuzzyTableSearch.js';
 
@@ -12,26 +11,33 @@ import { filterAwareSearch } from './FuzzyTableSearch.js';
  * @param {Array} context.filters - Array of filter definitions.
  */
 export function createFilters(context) {
-    if (context.aside) {
-      const asideContainer = elem('aside', { innerHTML: context.aside });
-      context.container.appendChild(asideContainer);
-    }
-    if (context.filters.length > 0) {
-      const filterContainer = elem('div', {
-        className: context.classes.filterContainer,
-        id: 'fuzzy_filters'
-      });
-      context.filters.forEach((filter, filterKey) => {
-        const filterName = elem('div', {
-          className: context.classes.fieldsetWrap,
-          textContent: filter.name
+    if (context.aside || context.filters.length > 0) {
+      const asideWrapper = elem('aside', { className: context.classes.asideWrapper });
+
+      if (context.aside) {
+        const infobox = elem('div', { className: context.classes.aside, innerHTML: context.aside });
+        asideWrapper.appendChild(infobox);
+      }
+
+      if (context.filters.length > 0) {
+        const filterContainer = elem('div', {
+          className: context.classes.filterContainer,
+          id: 'fuzzy_filters'
         });
-        filterContainer.appendChild(filterName);
-        const fieldset = createFilterFieldset(filter, filterKey, applyFilters, context);
-        filterContainer.appendChild(fieldset);
-      });
-  
-      context.container.appendChild(filterContainer);
+        context.filters.forEach((filter, filterKey) => {
+          const filterName = elem('div', {
+            className: context.classes.fieldsetWrap,
+            textContent: filter.name
+          });
+          filterContainer.appendChild(filterName);
+          const fieldset = createFilterFieldset(filter, filterKey, applyFilters, context);
+          filterContainer.appendChild(fieldset);
+        });
+
+        asideWrapper.appendChild(filterContainer);
+      }
+
+      context.container.appendChild(asideWrapper);
     }
   }
 
@@ -44,7 +50,6 @@ export function createFilters(context) {
  * @returns {HTMLElement} The constructed button element.
  */
 function createFilterButton(filter, classes, option, onClick) {
-
   const filterFragment = document.createDocumentFragment();
 
   if (filter.icon) {
@@ -92,11 +97,7 @@ function createFilterFieldset(filter, filterKey, applyFilters, context) {
  * @param {Number} optionKey - The index of the current option in the filter's options array.
  */
 export function applyFilters(c, filterKey, optionKey) {
-  // Mark the selected filter option as active if it has a value
-  c.filters[filterKey].options[optionKey].active =
-    c.filters[filterKey].options[optionKey].values !== "";
-
-  // If it's a radio filter, deactivate all other options in that group
+  c.filters[filterKey].options[optionKey].active = c.filters[filterKey].options[optionKey].values !== "";
   if (c.filters[filterKey].filterType === "radio") {
     c.filters[filterKey].options.forEach((option, i) => {
       if (i !== optionKey) {
@@ -105,10 +106,7 @@ export function applyFilters(c, filterKey, optionKey) {
     });
   }
 
-  // Delegate table update to filterAwareSearch (which handles both filters + fuzzy search)
   filterAwareSearch(c);
-
-  // Update UI to reflect active filters
   const filterContainer = document.getElementById("fuzzy_filters");
   if (!filterContainer) return;
 
@@ -133,4 +131,3 @@ export function applyFilters(c, filterKey, optionKey) {
     });
   });
 }
-
