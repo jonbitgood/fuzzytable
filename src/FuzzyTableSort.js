@@ -16,6 +16,17 @@ export function sort(context, column) {
 
     if (column.type === "int" || column.type === "year" || column.type === "bool") {
         return context.table.sort((a, b) => {
+            if (column.sortEmptyLast) {
+                const emptyA = column.type === "bool"
+                    ? (a[id] === undefined || a[id] === null || a[id] === "")
+                    : (a[id] == null || a[id] === "" || a[id] === 0);
+                const emptyB = column.type === "bool"
+                    ? (b[id] === undefined || b[id] === null || b[id] === "")
+                    : (b[id] == null || b[id] === "" || b[id] === 0);
+                if (emptyA && emptyB) return 0;
+                if (emptyA) return 1;
+                if (emptyB) return -1;
+            }
             const valA = a[id] !== undefined && a[id] !== null ? Number(a[id]) : -Infinity;
             const valB = b[id] !== undefined && b[id] !== null ? Number(b[id]) : -Infinity;
             return isDescending ? valB - valA : valA - valB;

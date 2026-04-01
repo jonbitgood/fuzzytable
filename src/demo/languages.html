@@ -26,11 +26,11 @@
     </nav>
     <div id="FuzzyTableWrapper" class="flex flex-row max-w-7xl mx-auto"></div>
     <script type="module">
-        import FuzzyTable from '/dist/FuzzyTable.min.js'
+        import FuzzyTable from '/src/FuzzyTable.js'
 
         const head = [
             { id: "name", name: "Title", subtitle: "autonym", link: { basepath: `https://iso639-3.sil.org/code/`, id: 'iso' } },
-            { id: "population", name: "Population", type: "int", searchable: false, class: "text-center" },
+            { id: "population", name: "Population", type: "int", searchable: false, class: "text-center", sortEmptyLast: true },
             { id: "iso", name: "iso" },
             { id: "location", name: "location", icon: { base: '/src/demo/flags.svg#', id: 'country_id', class: "h-5 w-5 drop-shadow-md inline-block ml-3" } },
             { id: "status_id", name: "status_id", searchable: false, class: "text-center" },

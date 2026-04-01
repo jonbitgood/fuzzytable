@@ -3,6 +3,7 @@ export interface Column {
   key: string;
   class?: string;
   sortDir?: 'ascending' | 'descending';
+  sortEmptyLast?: boolean;
   link?: {
     href: string;
     data?: string;
