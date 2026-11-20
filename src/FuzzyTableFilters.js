@@ -24,6 +24,7 @@ export function createFilters(context) {
           className: context.classes.filterContainer,
           id: 'fuzzy_filters'
         });
+        context.filterContainer = filterContainer;
         context.filters.forEach((filter, filterKey) => {
           const filterName = elem('div', {
             className: context.classes.fieldsetWrap,
@@ -97,7 +98,8 @@ function createFilterFieldset(filter, filterKey, applyFilters, context) {
  * @param {Number} optionKey - The index of the current option in the filter's options array.
  */
 export function applyFilters(c, filterKey, optionKey) {
-  c.filters[filterKey].options[optionKey].active = c.filters[filterKey].options[optionKey].values !== "";
+  const selected = c.filters[filterKey].options[optionKey];
+  selected.active = c.filters[filterKey].filterType === "radio" || !selected.active;
   if (c.filters[filterKey].filterType === "radio") {
     c.filters[filterKey].options.forEach((option, i) => {
       if (i !== optionKey) {
@@ -107,11 +109,11 @@ export function applyFilters(c, filterKey, optionKey) {
   }
 
   filterAwareSearch(c);
-  const filterContainer = document.getElementById("fuzzy_filters");
+  const filterContainer = c.filterContainer;
   if (!filterContainer) return;
 
   const fieldsets = Array.from(filterContainer.querySelectorAll("fieldset"));
-  const activeClasses = c.classes.filterButtonActive.trim().replace(/\s+/g, " ").split(" ");
+  const activeClasses = c.classes.filterButtonActive.split(/\s+/).filter(Boolean);
 
   c.filters.forEach((filter, fIndex) => {
     const fieldset = fieldsets[fIndex];

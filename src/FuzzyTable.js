@@ -1,40 +1,35 @@
 import { sort } from './FuzzyTableSort.js'
 import { createTbody } from './FuzzyTableBody.js'
 import { mergeClasses } from './FuzzyTableStyles.js'
-import {createFilters, applyFilters} from './FuzzyTableFilters.js'
-import createSearchBox from './FuzzyTableSearch.js'
+import { createFilters } from './FuzzyTableFilters.js'
+import createSearchBox, { createSearchIndex, filterAwareSearch, refreshRows } from './FuzzyTableSearch.js'
 import createDownloadUI from './FuzzyTableDownloader.js'
 import CreatePagination, {paginationUpdate as pUpdate, CreateTopPagination} from './FuzzyTablePagination.js'
 import createSizeSelector from './FuzzyTableSizeSelect.js'
 
 export default class FuzzyTable {
-    constructor(containerId, data, head, options) {
-        this.container = document.getElementById(containerId);
-        if(data) {
-            this.data = [...data];
-            this.table = [...data];
-        } else {
-            this.data = [...JSON.parse(this.container.dataset.rows)];
-            this.table = [...JSON.parse(this.container.dataset.rows)];
-        }
-
-        this.searchBox;
-        this.query =  '';
+    constructor(containerId, data, head, options = {}) {
+        this.container = typeof containerId === 'string' ? document.getElementById(containerId) : containerId;
+        this.data = [...(data ?? JSON.parse(this.container.dataset.rows))];
+        this.head = head ?? JSON.parse(this.container.dataset.head);
+        this.config = options;
+        this.query = '';
         this.sortedCol = '';
-        this.filters = options.filters ?? [];
-        this.head = head;
+        this.filters = (options.filters ?? []).map(filter => {
+            const selected = filter.options.find(option => option.active);
+            return {
+                ...filter,
+                options: filter.options.map(option => ({
+                    ...option,
+                    active: filter.filterType === 'radio' ? option === selected : option.active
+                }))
+            };
+        });
 
-        if(head) {
-            this.head = head;
-        } else {
-            this.head = [...JSON.parse(this.container.dataset.head)];
-        }
-
-        this.filteredTable = [];
         this.size = (options.pageSize ?? this.container?.dataset?.pageSize) ?? 100;
         this.currentPage = 0;
         this.numberCol = options.numberCol ?? false;
-        this.pageSizes = (options.pageSizes ?? this.container?.dataset?.pageSizes) ?? [50, 100, 250, 1000, 5000];
+        this.pageSizes = options.pageSizes ?? JSON.parse(this.container.dataset.pageSizes ?? '[50,100,250,1000,5000]');
         this.paginationArrowButtonsDisabled = options?.paginationArrowButtonsDisabled
         this.classes = mergeClasses(options.classes);
         this.aside = (options.aside ?? this.container?.dataset?.aside);
@@ -48,15 +43,22 @@ export default class FuzzyTable {
     }
 
     setData(newData) {
-        this.data = newData;
-        this.table = newData;
-        this.filteredTable = newData.filter(() => true);
-        this.currentPage = 0;
-        this.updateTable();
-        this.paginationUpdate();
+        this.data = [...newData];
+        this.searchIndex = createSearchIndex(this.excludedFields);
+        filterAwareSearch(this);
     }
 
     render = () => {
+        this.excludedFields = new Set();
+        const includedFields = new Set();
+        for (const column of this.head) {
+            const fields = column.searchable === false ? this.excludedFields : includedFields;
+            fields.add(column.id);
+            if (column.subtitle) fields.add(column.subtitle);
+        }
+        for (const field of includedFields) this.excludedFields.delete(field);
+        this.searchIndex = createSearchIndex(this.excludedFields);
+        refreshRows(this);
         this.container.innerHTML = '';
         createFilters(this)
         const tableContainer = document.createElement('div');
@@ -78,11 +80,17 @@ export default class FuzzyTable {
             thead.className = this.classes.thead;
         }
 
+        const headerRow = thead.insertRow();
+        const initialSort = !this.query && this.head.find(column => column.sortDir);
+        this.sortedCol = initialSort ? initialSort.id : '';
+        this.sortDescending = initialSort?.sortDir === 'descending';
+        if (initialSort) sort(this, initialSort, this.sortDescending);
+        this.sortArrows = [];
         if (this.numberCol) {
             const numTh = document.createElement('th');
             numTh.className = `${this.classes.th ?? ''} number-column`;
             numTh.textContent = '#'; // Column header for numbering
-            thead.appendChild(numTh);
+            headerRow.appendChild(numTh);
         }
 
         for (const column of this.head) {
@@ -95,29 +103,23 @@ export default class FuzzyTable {
             arrowDown.className = this.classes.arrowDown;
             arrowUp.textContent = '▲';
             arrowDown.textContent = '▼';
-            arrowUp.style.opacity = (column.sortDir == "ascending") ? 1 : 0.35;
-            arrowDown.style.opacity = (column.sortDir == "descending") ? 1 : 0.35;
+            arrowUp.style.opacity = (column === initialSort && !this.sortDescending) ? 1 : 0.35;
+            arrowDown.style.opacity = (column === initialSort && this.sortDescending) ? 1 : 0.35;
         
+            this.sortArrows.push(arrowUp, arrowDown);
             th.appendChild(arrowUp);
             th.appendChild(arrowDown);
         
             th.addEventListener('click', () => {
-                for (const arrow of document.querySelectorAll('th span')) {
-                    arrow.style.opacity = 0.35;
-                }
-                const isAscending = th.classList.toggle('ascending');
-                if (isAscending) {
-                    arrowUp.style.opacity = 1;
-                    arrowDown.style.opacity = 0.35;
-                } else {
-                    arrowDown.style.opacity = 1;
-                    arrowUp.style.opacity = 0.35;
-                }
-                this.table = sort(this, column);
+                this.sortDescending = this.sortedCol === column.id && !this.sortDescending;
+                this.sortedCol = column.id;
+                for (const arrow of this.sortArrows) arrow.style.opacity = 0.35;
+                (this.sortDescending ? arrowDown : arrowUp).style.opacity = 1;
+                sort(this, column, this.sortDescending);
                 this.updateTable();
             });
         
-            thead.appendChild(th);
+            headerRow.appendChild(th);
         }
         
         table.appendChild(thead);
@@ -127,6 +129,7 @@ export default class FuzzyTable {
             tbody.className = this.classes.tbody;
         }
         
+        this.tbody = tbody;
         createTbody(this, tbody);
         table.appendChild(tbody);
 
@@ -134,13 +137,16 @@ export default class FuzzyTable {
         tableContainer.appendChild(table);
         CreatePagination(this, tableContainer)
         this.container.append(tableContainer);
-        this.filters.forEach((filter, filterKey) => {
-            filter.options.forEach((option, optionKey) => {
-                if (option.active) {
-                    applyFilters(this, filterKey, optionKey);
-                }
-            });
-        });
+    }
+
+    resetSort() {
+        this.sortedCol = '';
+        for (const arrow of this.sortArrows) arrow.style.opacity = 0.35;
+    }
+
+    destroy() {
+        this.downloadEvents?.abort();
+        this.container.replaceChildren();
     }
 
     safeHtml = (html) => {
@@ -158,5 +164,5 @@ export default class FuzzyTable {
     }
 
     paginationUpdate = () => pUpdate(this)
-    updateTable = () => createTbody(this, document.getElementById('fuzzy-rows'))
+    updateTable = () => createTbody(this, this.tbody)
 }

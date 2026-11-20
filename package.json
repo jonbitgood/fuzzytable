@@ -1,7 +1,7 @@
 {
   "name": "fuzzytable",
   "type": "module",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A JavaScript module to render and manage a dynamic data table with sorting, filtering, and pagination.",
   "main": "./dist/FuzzyTable.min.js",
   "module": "./dist/FuzzyTable.min.js",
@@ -14,7 +14,7 @@
       "require": "./dist/FuzzyTable.min.umd.cjs"
     },
     "./svelte": {
-      "types": "./src/FuzzyTable.d.ts",
+      "types": "./src/FuzzyTable.svelte.d.ts",
       "svelte": "./src/FuzzyTable.svelte"
     },
     "./style.css": "./dist/FuzzyTable.min.css"
@@ -22,6 +22,7 @@
   "files": [
     "dist",
     "src/FuzzyTable.svelte",
+    "src/FuzzyTable.svelte.d.ts",
     "src/FuzzyTable.d.ts",
     "src/FuzzyTable.js",
     "src/FuzzyTableHelper.js",
@@ -29,6 +30,7 @@
     "src/FuzzyTableFilters.js",
     "src/FuzzyTableSort.js",
     "src/FuzzyTableSearch.js",
+    "src/FuzzyTableMatch.js",
     "src/FuzzyTablePagination.js",
     "src/FuzzyTableSizeSelect.js",
     "src/FuzzyTableDownloader.js",
@@ -37,7 +39,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node --test"
   },
   "keywords": [
     "data-table",

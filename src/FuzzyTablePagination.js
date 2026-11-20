@@ -1,4 +1,4 @@
-import { elem } from "./FuzzyTableHelper";
+import { elem } from './FuzzyTableHelper.js';
 
 /**
  * Initializes and appends pagination navigation elements to a table container.
@@ -8,20 +8,18 @@ import { elem } from "./FuzzyTableHelper";
  * @param {HTMLElement} tableContainer - The container to which the pagination elements will be appended.
  */
 export default function CreatePagination(context, tableContainer) {
-    if (!context.paginationNav) {
-        context.paginationNav = elem('nav', { id: 'paginationNav', className: context.classes.paginationNav || '' });
-        const tablePagination = elem('div', {
-            id: 'paginationContainer',
-            className: context.classes.tablePagination || ''
-        });
-        tablePagination.appendChild(context.paginationNav)
-        context.paginationDescription = elem('div', {
-            id: 'paginationDescription',
-            className: context.classes.paginationDescription || ''
-        });
-        tablePagination.appendChild(context.paginationDescription);
-        tableContainer.appendChild(tablePagination);
-    }
+    context.paginationNav = elem('nav', { id: 'paginationNav', className: context.classes.paginationNav || '' });
+    const tablePagination = elem('div', {
+        id: 'paginationContainer',
+        className: context.classes.tablePagination || ''
+    });
+    tablePagination.appendChild(context.paginationNav)
+    context.paginationDescription = elem('div', {
+        id: 'paginationDescription',
+        className: context.classes.paginationDescription || ''
+    });
+    tablePagination.appendChild(context.paginationDescription);
+    tableContainer.appendChild(tablePagination);
 
     paginationUpdate(context);
 }
@@ -49,7 +47,7 @@ export function CreateTopPagination(context) {
       fragment.appendChild(createArrowElement(context, "back", "top"));
     }
     const currentDisplay = elem("span", {
-      innerHTML: `${context.numberFormatter.format(context.currentPage + 1)} <span class="${context.classes.paginationTopSlash}">${context.t?.of ?? '/'}</span> ${context.numberFormatter.format(totalPages)}`,
+      innerHTML: `${context.numberFormatter.format(totalPages ? context.currentPage + 1 : 0)} <span class="${context.classes.paginationTopSlash}">${context.t?.of ?? '/'}</span> ${context.numberFormatter.format(totalPages)}`,
       className: context.classes.topPaginationCurrent || ""
     });
     fragment.appendChild(currentDisplay);
@@ -73,8 +71,8 @@ export const paginationUpdate = (context) => {
     topPaginationUpdate(context);
     const { paginationDescriptionStart, paginationDescriptionEnd, paginationDescriptionTotal } = context.classes;
     context.paginationDescription.innerHTML = `
-        ${context.t?.showing ?? ''} 
-        <span class="${paginationDescriptionStart}">${context.numberFormatter.format(context.currentPage * context.size + 1)}</span>
+        ${context.t?.showing ?? ''}
+        <span class="${paginationDescriptionStart}">${context.numberFormatter.format(totalPages ? context.currentPage * context.size + 1 : 0)}</span>
         ${context.t?.to ?? '-'}
         <span class="${paginationDescriptionEnd}">${context.numberFormatter.format(Math.min((context.currentPage + 1) * context.size, context.table.length))}</span>
         ${context.t?.of ?? '/'}

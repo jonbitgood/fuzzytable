@@ -1,27 +1,37 @@
 export interface Column {
   name: string;
-  key: string;
+  id: string;
+  type?: string;
+  subtitle?: string;
+  searchable?: boolean;
+  suffix?: string;
+  hideZeros?: boolean;
+  icon?: { id: string; base: string; class?: string };
+  img?: { id: string; base: string; ext?: string; class?: string };
   class?: string;
   sortDir?: 'ascending' | 'descending';
   sortEmptyLast?: boolean;
   link?: {
-    href: string;
-    data?: string;
+    id: string;
+    base?: string;
+    target?: string;
+    data?: Record<string, string>;
   };
 }
 
 export interface FilterOption {
   title: string;
-  values: string | string[];
+  value: RegExp;
+  inverse?: boolean;
   active?: boolean;
   code?: string;
 }
 
 export interface Filter {
   name: string;
-  key: string;
+  filterColumn: string;
   filterType: 'checkbox' | 'radio';
-  icon?: string;
+  icon?: { base: string; class?: string };
   options: FilterOption[];
 }
 
@@ -36,6 +46,7 @@ export interface Classes {
   td?: string;
   arrowUp?: string;
   arrowDown?: string;
+  matchHighlight?: string;
   searchInput?: string;
   searchContainer?: string;
   filterContainer?: string;
@@ -55,6 +66,9 @@ export interface Translation {
 }
 
 export interface FuzzyTableOptions {
+  similarityThreshold?: number;
+  exactMatchBonus?: number;
+  highlightMatches?: boolean;
   filters?: Filter[];
   pageSize?: number;
   numberCol?: boolean;
@@ -71,7 +85,7 @@ export interface FuzzyTableOptions {
 
 export default class FuzzyTable {
   constructor(
-    containerId: string,
+    containerId: string | HTMLElement,
     data: any[],
     head: Column[],
     options?: FuzzyTableOptions
@@ -94,6 +108,7 @@ export default class FuzzyTable {
 
   setData(newData: any[]): void;
   render(): void;
+  destroy(): void;
   safeHtml(html: string): Node | null;
   paginationUpdate(): void;
   updateTable(): void;

@@ -36,11 +36,13 @@ export default function createDownloadUI(context) {
     details.appendChild(summary);
     details.appendChild(dropdown);
   
+    context.downloadEvents?.abort();
+    context.downloadEvents = new AbortController();
     document.addEventListener('click', (event) => {
       if (!details.contains(event.target) && details.hasAttribute('open')) {
         details.removeAttribute('open');
       }
-    });
+    }, { signal: context.downloadEvents.signal });
   
     return details;
 }
@@ -59,6 +61,7 @@ function downloadData(data, type) {
             const str = String(value ?? '');
             return str.includes(separator) || /["\r\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
         };
+        if (!data.length) return '';
         const keys = Object.keys(data[0]);
         const headings = keys.map(escape).join(separator);
         const rows = data.map(row => keys.map(key => escape(row[key])).join(separator)).join('\n');
@@ -80,11 +83,20 @@ function downloadData(data, type) {
             fileName = 'data.csv';
             fileContent = convertArrayToSeparatedValues(data, ',');
             break;
-        case 'Excel':
+        case 'Excel': {
+            const keys = Object.keys(data[0] ?? {});
+            const escape = value => String(value ?? '').replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+            const headings = keys.map(key => `<th>${escape(key)}</th>`).join('');
+            const rows = data.map(row => {
+                const cells = keys.map(key => `<td>${escape(row[key])}</td>`).join('');
+                return `<tr>${cells}</tr>`;
+            }).join('');
             fileType = 'application/vnd.ms-excel';
             fileName = 'data.xls';
-            fileContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Sheet1</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table><thead><tr>${Object.keys(data[0]).map(k=>`<th>${k}</th>`).join``}</tr></thead><tbody>${data.map(r=>`<tr>${Object.values(r).map(v=>`<td>${v}</td>`).join``}</tr>`).join``}</tbody></table></body></html>`;
+            fileContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Sheet1</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table><thead><tr>${headings}</tr></thead><tbody>${rows}</tbody></table></body></html>`;
             break;
+        }
         default:
             fileType = 'application/json';
             fileName = 'data.json';
@@ -99,4 +111,5 @@ function downloadData(data, type) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(link.href), 0);
 }

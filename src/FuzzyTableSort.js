@@ -1,6 +1,5 @@
 /**
  * Sorts the data table in the given context based on the specified column.
- * It toggles the sorting order for the column between ascending and descending.
  * The sorting behavior varies depending on the data type of the column (integer or string).
  *
  * @param {Object} context - The context containing the table to be sorted and sorting states.
@@ -9,10 +8,8 @@
  * @param {string} column.type - The data type of the column (e.g., 'int' for integers).
  * @returns {Array} The sorted array from the context's table.
  */
-export function sort(context, column) {
+export function sort(context, column, isDescending) {
     const id = column.id;
-    const isDescending = context.sortedCol === id;
-    context.sortedCol = isDescending ? "" : id; // Toggle sorted column
 
     if (column.type === "int" || column.type === "year" || column.type === "bool") {
         return context.table.sort((a, b) => {
@@ -34,8 +31,8 @@ export function sort(context, column) {
     }
 
     return context.table.sort((a, b) => {
-        const current = a[id] ?? "";
-        const next = b[id] ?? "";
+        const current = String(a[id] ?? "");
+        const next = String(b[id] ?? "");
         return isDescending ? next.localeCompare(current) : current.localeCompare(next);
     });
 }

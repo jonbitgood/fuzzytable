@@ -12,21 +12,11 @@ export default defineConfig({
   build: {
     // Plain JS build (original)
     lib: {
-      entry: path.resolve('src/FuzzyTable.js'),
+      entry: path.resolve('src/bundle.js'),
       name: 'FuzzyTable',
       fileName: 'FuzzyTable.min',
+      cssFileName: 'FuzzyTable.min',
       formats: ['umd', 'es'],
     },
-    rollupOptions: {
-      output: {
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'style.css') {
-            return 'FuzzyTable.min.css';
-          }
-          return assetInfo.name;
-        },
-      },
-    },
-    cssCodeSplit: true,
   },
 });

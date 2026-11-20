@@ -1,4 +1,5 @@
 <script>
+  import { onDestroy } from 'svelte';
   import FuzzyTable from './FuzzyTable.js';
 
   let {
@@ -9,41 +10,19 @@
   } = $props();
 
   let containerElement = $state(null);
-  let tableInstance = $state(null);
-  let initialized = $state(false);
-
-  let mergedOptions = $derived({
-    filters: [],
-    pageSize: 100,
-    numberCol: false,
-    pageSizes: [50, 100, 250, 1000, 5000],
-    locale: 'en',
-    vernacularNumerals: true,
-    t: { search_placeholder: 'Search' },
-    ...options
-  });
+  let tableInstance;
 
   $effect(() => {
-    if (containerElement && data && head && data.length > 0 && !initialized) {
-      containerElement.id = containerId;
-      tableInstance = new FuzzyTable(containerId, data, head, mergedOptions);
-      initialized = true;
-    }
-  });
-
-  $effect(() => {
-    if (tableInstance && data && initialized) {
+    if (!containerElement) return;
+    if (tableInstance && tableInstance.head === head) {
       tableInstance.setData(data);
+    } else {
+      tableInstance?.destroy();
+      tableInstance = new FuzzyTable(containerElement, data, head, options);
     }
   });
 
-  $effect(() => {
-    return () => {
-      if (containerElement) {
-        containerElement.innerHTML = '';
-      }
-    };
-  });
+  onDestroy(() => tableInstance?.destroy());
 
   export function setData(newData) {
     if (tableInstance) {
@@ -56,4 +35,4 @@
   }
 </script>
 
-<div bind:this={containerElement}></div>
+<div id={containerId} bind:this={containerElement}></div>

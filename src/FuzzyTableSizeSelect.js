@@ -1,4 +1,4 @@
-import { elem } from "./FuzzyTableHelper";
+import { elem } from './FuzzyTableHelper.js';
 
 /**
  * Creates a dropdown selector for choosing the pagination size in a table. This selector allows users to
@@ -17,7 +17,7 @@ export default function createSizeSelector(context) {
     const select = elem('select', {id: 'fuzzy_size_select',className: context.classes.sizeSelect || ''});
     sizeSelectContainer.appendChild(select);
   
-    const numberFormatter = new Intl.NumberFormat(context.locale);
+    const numberFormatter = context.numberFormatter;
     for (const pageSize of context.pageSizes) {
       const option = elem('option', {value: pageSize, textContent: numberFormatter.format(pageSize)});
       if (pageSize === context.size) {
