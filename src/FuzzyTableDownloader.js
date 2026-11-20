@@ -55,8 +55,13 @@ export default function createDownloadUI(context) {
 function downloadData(data, type) {
 
     const convertArrayToSeparatedValues = (data, separator) => {
-        const headings = Object.keys(data[0]).join(separator);
-        const rows = data.map(row => Object.values(row).join(separator)).join('\n');
+        const escape = (value) => {
+            const str = String(value ?? '');
+            return str.includes(separator) || /["\r\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+        };
+        const keys = Object.keys(data[0]);
+        const headings = keys.map(escape).join(separator);
+        const rows = data.map(row => keys.map(key => escape(row[key])).join(separator)).join('\n');
         return `${headings}\n${rows}`;
     };
 
